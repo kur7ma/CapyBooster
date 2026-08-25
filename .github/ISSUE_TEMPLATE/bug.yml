@@ -1,0 +1,65 @@
+﻿name: "Баг / Bug report"
+description: "Что-то сломалось или ведёт себя не так / Something broke or misbehaves"
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Прежде чем писать — загляните в [FAQ](https://github.com/kur7ma/CapyBooster/blob/main/FAQ.md).**
+        Самые частые вопросы там уже разобраны: «везде неразличимо», «игра не
+        запускается после переноса папки», «Windows стала думать дольше».
+
+        Before filing, please check the [FAQ](https://github.com/kur7ma/CapyBooster/blob/main/FAQ.md).
+
+  - type: input
+    id: version
+    attributes:
+      label: "Версия пака / Pack version"
+      description: "Строка под баннером: CapyBooster v4.2.0   сборка ...   коммит ..."
+      placeholder: "CapyBooster v4.2.0   сборка 2026-08-25   коммит f7485e8"
+    validations:
+      required: true
+
+  - type: textarea
+    id: what
+    attributes:
+      label: "Что произошло / What happened"
+      description: "Что вы сделали, что ожидали и что получилось."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: where
+    attributes:
+      label: "Где это случилось / Where"
+      options:
+        - "Мастер (START.cmd) / Wizard"
+        - "Отдельный модуль / A single module"
+        - "Проверка системы (verify.ps1) / System check"
+        - "Отчёт / Report"
+        - "Обновление (Update-Pack.ps1) / Update"
+        - "Не знаю / Not sure"
+    validations:
+      required: true
+
+  - type: textarea
+    id: diag
+    attributes:
+      label: "Архив диагностики / Diagnostics archive"
+      description: |
+        В мастере есть шаг «Архив диагностики для отправки» — он кладёт zip на
+        рабочий стол. Перетащите файл сюда.
+
+        **Что внутри:** журналы, состояние модулей, замеры, снимок железа и
+        свежая проверка системы.
+
+        **Что из него убрано:** имя учётной записи, имя компьютера, номера
+        аккаунтов Steam и название домена. В имени самого файла личного тоже
+        ничего нет. Пути остаются читаемыми, поэтому разбирать архив это не
+        мешает.
+
+        Репозиторий публичный, так что загляните внутрь перед отправкой —
+        проверить чужую работу никогда не лишнее.
+      placeholder: "Перетащите zip сюда, либо напишите, почему его нет."
+    validations:
+      required: true
