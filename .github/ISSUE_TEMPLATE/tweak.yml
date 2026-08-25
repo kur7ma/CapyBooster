@@ -1,0 +1,49 @@
+name: "Предложить твик / Propose a tweak"
+description: "Идея настройки, которой в паке нет / A setting the pack does not do yet"
+labels: ["tweak-proposal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Этот пак не добавляет твиков «потому что все советуют».** Настройка
+        попадает в него, только если эффект можно измерить или объяснить
+        механизмом. Иначе она попадает в раздел «чего пак намеренно не делает» —
+        тоже с объяснением, и это нормальный исход предложения.
+
+        This pack does not add tweaks because "everyone recommends them". A
+        setting gets in only if its effect can be measured or explained by a
+        mechanism. Otherwise it goes into the "what the pack deliberately does
+        not do" list, with a reason.
+
+  - type: textarea
+    id: what
+    attributes:
+      label: "Что настраивается / What it changes"
+      description: "Конкретно: ключ реестра, команда, параметр. Не «ускорить систему»."
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: "Почему это должно работать / Why it should work"
+      description: "Механизм, а не ссылка на видео. Что именно в Windows меняется и как это влияет на кадры."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: evidence
+    attributes:
+      label: "Чем подтверждается / Evidence"
+      options:
+        - "Я это измерил, цифры приложу / I measured it, numbers below"
+        - "Есть механизм, но замера нет / Mechanism is clear, no measurement"
+        - "Видел совет, но не проверял / Saw it recommended, did not verify"
+    validations:
+      required: true
+
+  - type: textarea
+    id: numbers
+    attributes:
+      label: "Цифры / Numbers"
+      description: "Если измеряли: до, после, сколько прогонов, разброс между прогонами. Разница меньше разброса — это не результат."
