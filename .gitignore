@@ -1,0 +1,12 @@
+# Личные данные конкретной машины: результаты прогонов и резервные копии.
+results/
+backups/
+
+# Скачиваемые инструменты — качаются паком по требованию.
+tools/bin/
+tools/*.exe
+tools/nvidiaProfileInspector/
+
+# Мусор Windows
+Thumbs.db
+desktop.ini
