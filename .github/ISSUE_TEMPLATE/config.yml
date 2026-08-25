@@ -1,0 +1,16 @@
+# Пустые issue запрещены: без структуры разбор превращается в переписку
+# «а какая у вас версия», «а лог приложите». Форма спрашивает это сразу.
+blank_issues_enabled: false
+
+contact_links:
+  - name: "Поделиться результатами / Share your results"
+    url: https://github.com/kur7ma/CapyBooster/discussions/categories/results
+    about: "Замеры до и после, железо, что помогло. Это обсуждение, а не issue."
+
+  - name: "Вопрос / Question"
+    url: https://github.com/kur7ma/CapyBooster/discussions/categories/q-a
+    about: "Не уверены, баг это или нет — спросите здесь."
+
+  - name: "FAQ"
+    url: https://github.com/kur7ma/CapyBooster/blob/main/FAQ.md
+    about: "«Везде неразличимо», «игра не запускается», «стало медленнее» — уже разобрано."
