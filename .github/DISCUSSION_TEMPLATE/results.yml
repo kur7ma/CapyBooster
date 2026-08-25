@@ -1,0 +1,59 @@
+title: "[Результаты] "
+labels: ["results"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Спасибо, что делитесь. Такие сообщения — то, из чего пак растёт: почти
+        все находки в журнале изменений пришли из чужих отчётов.
+
+        **Перед отправкой загляните в архив.** Внутри журналы, состояние
+        модулей, замеры и снимок железа. Имя учётной записи замаскировано, имя
+        компьютера остаётся в названии файла. Репозиторий публичный.
+
+  - type: input
+    id: cpu
+    attributes:
+      label: "Процессор / CPU"
+      placeholder: "AMD Ryzen 7 9850X3D / Intel i9-12900KF"
+    validations:
+      required: true
+
+  - type: input
+    id: gpu
+    attributes:
+      label: "Видеокарта / GPU"
+      placeholder: "RTX 4070 / RX 9070 XT"
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: "Windows"
+      placeholder: "Windows 11 25H2, сборка 26200"
+    validations:
+      required: true
+
+  - type: textarea
+    id: result
+    attributes:
+      label: "Что изменилось / What changed"
+      description: |
+        Лучше всего — в цифрах: средний FPS и 1% low до и после, или вердикты
+        синтетических замеров. «Стало лучше» без чисел тоже принимается, но
+        помните: разница меньше 2% в среднем FPS — это разброс самого замера.
+    validations:
+      required: true
+
+  - type: textarea
+    id: modules
+    attributes:
+      label: "Какие модули применяли / Which modules"
+      description: "Можно просто приложить отчёт или архив диагностики — там всё это есть."
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: "Что-то пошло не так? / Anything go wrong?"
+      description: "Если какой-то модуль сделал хуже — это самое ценное, что можно прислать. Такие сообщения меняли умолчания пака."
