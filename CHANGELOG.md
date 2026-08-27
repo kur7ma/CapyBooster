@@ -8,6 +8,37 @@ heading. The updater shows those headings before it installs anything.
 
 ---
 
+## 5.0.2 - 27 August 2026
+
+**The wizard no longer starts twice at once.** It looked like this: after an
+update the CS2 settings question was asked twice, the report opened in the
+browser twice, and log lines came in pairs. The cause is a continuation of the
+same START.cmd story fixed in 5.0.1: the old launcher seeked back to its byte
+offset inside the new file, landed on the line that starts the wizard and
+started it a second time. Two wizards ended up in one console: they shared the
+keyboard (a keypress went to one or the other) and, worse, both wrote the same
+run state file.
+
+The wizard now takes a named machine-wide lock. A second instance waits twenty
+seconds - enough for the wizard's own handover during an update or elevation -
+and if the first one is still running, it says so plainly and exits. A wizard
+killed from Task Manager does not leave the lock stuck: the next launch picks
+it up and runs normally.
+
+**The summary line no longer contradicts itself.** It printed "steps completed:
+23 of 23" and directly below "NOT performed (skipped): 2 of 23". The completed
+list holds both executed and deliberately skipped steps - by design, otherwise
+a skipped step would be offered again on every run - but they must not count as
+completed. Skipped steps are now subtracted, and the skipped list itself
+survives leaving the wizard: before, it lived only in the run's memory.
+
+**Skip the report and the browser stays shut.** The "HTML report" step can be
+skipped, and the wizard used to open the newest report file in results anyway -
+showing last time's numbers, without today's changes. Only a report created in
+this run is opened.
+
+---
+
 ## 5.0.1 - 27 August 2026
 
 **Fixed a stray command after an update: a foreign line ran right after "the
