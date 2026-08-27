@@ -8,6 +8,28 @@ heading. The updater shows those headings before it installs anything.
 
 ---
 
+## 5.0.1 - 27 August 2026
+
+**Fixed a stray command after an update: a foreign line ran right after "the
+wizard is restarting".** It looked like `"the" is not recognized as an internal
+or external command`. The cause is how cmd.exe works: it does not read
+START.cmd into memory, it remembers a byte offset and re-reads the file from
+disk after every command. An update rewrites the pack in place, START.cmd
+included, so when the wizard exited cmd seeked back to its old offset inside a
+now-different file, landed in the middle of some other line and ran whatever it
+found there.
+
+The update itself was fine: the pack updated, the wizard relaunched, everything
+worked. Only the appearance broke — people read a baffling error at the exact
+moment everything had gone right.
+
+The wizard launch and the undo launch are now each a single line ending in
+`exit`: cmd parses the whole line before running it and then terminates without
+ever seeking back into the file. The trap had always been there; it only showed
+once START.cmd changed noticeably between versions.
+
+---
+
 ## 5.0.0 - 27 August 2026
 
 **Why a major number.** The pack is renamed on the inside, not just on the
@@ -34,6 +56,14 @@ pack reads both names.
 **Updating from an older version loses nothing.** The old main-script name is
 kept as a forwarder, so the "continue after reboot" task registered by the
 previous version still finds something to run.
+
+**The GPU interrupt core search no longer runs on laptops.** The measurement
+there would be reading the wrong card: the load window does not choose a
+graphics card — Windows does, and on a laptop that is usually the integrated
+one, while the binding would land on the discrete card. On top of that the
+module restarts the display driver for every core it tries, and in a hybrid
+setup the card being restarted is not the one driving the picture. The system
+check now says so instead of offering to run the search.
 
 **The system check now looks at thread scheduling.** On a processor with two
 classes of cores, and on an X3D part with two chiplets, where the threads land
