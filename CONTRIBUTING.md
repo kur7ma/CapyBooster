@@ -23,6 +23,14 @@ proposal, and it says nothing about the person who made it.
   working `revert.ps1`.
 * New interface strings go into **both** `lang\ru.json` and `lang\en.json`.
   A gate checks that the key sets match exactly.
+* A step that **requires** something — a piece of hardware, a driver, a tool,
+  an installed game — must declare `Applicable` in the wizard's step table, so
+  that it disappears on machines where it would be pointless. A step with no
+  requirement must **not** declare one: a gate that always returns true is
+  noise, and the next reader will hunt for the condition behind it. Either way,
+  say why in a comment. `Applicable` is evaluated once, while the step table is
+  built, so it must never test something that changes during a run — the power
+  source, for instance. That belongs in the pre-flight check.
 
 ## The constraint behind every review
 
@@ -57,6 +65,14 @@ updates from a two-month-old version.
   `revert.ps1`.
 * Новые строки интерфейса кладутся **и** в `lang\ru.json`, **и** в
   `lang\en.json`. Ворота проверяют, что наборы ключей совпадают ровно.
+* Шаг, которому что-то **требуется** — железо, драйвер, утилита, установленная
+  игра, — обязан объявить `Applicable` в таблице шагов мастера, чтобы исчезать
+  на машинах, где он бессмыслен. Шаг без требований объявлять `Applicable`
+  **не** должен: условие, которое всегда истинно, — это шум, и следующий
+  читатель будет искать за ним смысл. И в том, и в другом случае причина
+  пишется комментарием. `Applicable` вычисляется один раз, при построении
+  таблицы шагов, поэтому в нём нельзя проверять то, что меняется по ходу
+  прогона, — например питание. Такому место в предполётной проверке.
 
 ### Ограничение, из которого исходит любая проверка
 

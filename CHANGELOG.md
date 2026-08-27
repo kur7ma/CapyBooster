@@ -8,6 +8,173 @@ heading. The updater shows those headings before it installs anything.
 
 ---
 
+## 5.0.0 - 27 August 2026
+
+**Why a major number.** The pack is renamed on the inside, not just on the
+cover: the main script, the library and the run log all have new names.
+Everything that recognises traces of older versions on your machine is left
+where it was, and updating loses nothing — but this is the first release that
+changes file names, and calling it a new number is the honest thing to do.
+
+**A full undo is now one click away.** UNDO.cmd sits next to START.cmd and
+returns the system to the state before the pack was ever run. `START.cmd undo`
+does the same, and `START.cmd undo -Preview` shows the plan first without
+touching anything. This existed before but lived as a script in a subfolder,
+which put it out of reach of exactly the person who needs it: someone whose
+machine just got worse and who is not going to go reading documentation at
+that moment.
+
+**What exactly was renamed.** The main script is capybooster.ps1, the library
+CapyBooster.psm1, the log capybooster.log; the restore point, the scheduled task
+and the measurement window are renamed too. The old name stays where it
+recognises traces of older versions: task names, the machine-wide store, the
+marker in the CS2 config. WINOPT_ variables you set by hand keep working — the
+pack reads both names.
+
+**Updating from an older version loses nothing.** The old main-script name is
+kept as a forwarder, so the "continue after reboot" task registered by the
+previous version still finds something to run.
+
+**The system check now looks at thread scheduling.** On a processor with two
+classes of cores, and on an X3D part with two chiplets, where the threads land
+matters more than every tweak in the pack put together. The pack now names the
+problem out loud: the cache preference service stopped, Game Mode off on a
+dual-chiplet X3D, Intel dynamic tuning stopped. It turns none of them on
+itself — it only says what is off and what that costs.
+
+**A contradiction inside the pack's own report is resolved.** The pack said it
+does not switch Game Mode on blind, which is true. But a dual-chiplet X3D needs
+Game Mode: it is what parks the chiplet without cache. The refusal now carries
+that caveat, and on such a machine the check asks you to turn it on yourself.
+
+**A new laptop step: how power is split between the processor and the graphics
+card.** It writes nothing. Three independent controls divide the watts — NVIDIA
+Dynamic Boost, the vendor app's performance mode and the Windows power slider —
+and the pack can reach none of them: they live in the driver and in the laptop's
+own controller. The step explains where each one is, so you stop hunting for a
+setting the system does not have.
+
+**Three places where the pack was not doing what it was written for.** The
+memory hygiene module returned the path to its own copy under the old store
+folder while actually working in the new one. In the same module the "task
+points into the store" detection never fired. And the full undo read the
+machine-wide snapshot from the old path, so it never found it, and fell back to
+an intermediate backup instead of the original state.
+
+**The pack can tell a laptop from a desktop.** It could not before, at all. It
+tells them apart by chassis type rather than by the presence of a battery: a
+desktop on a UPS reports one too.
+
+**A measurement taken on battery is no longer compared with one taken on
+mains.** This is the important one. On battery the processor holds a different
+frequency ceiling, and such a pair is two different machines. The pack used to
+subtract one from the other in silence and produce a verdict that meant
+nothing. Now that pair comes back as "not comparable", through the same
+mechanism that already caught SMT being toggled between runs. Measurements
+taken before this version are judged as before: a missing power mark means
+"unknown", not "on mains".
+
+**The wizard warns about running on battery** before the run starts, but does
+not stop it: people unplug mid-way too.
+
+**The power plan is honest about the battery now.** It always wrote its values
+for mains power only, so on battery the scheme changed nothing. Nobody said so,
+and people who ran the pack and then unplugged decided the tweaker did not
+work. On a laptop this is stated plainly now.
+
+**The system check no longer shows green on battery.** The scheme is active but
+inert, and it says exactly that.
+
+**The Adrenalin walkthrough comes back for Core Ultra owners.** Core Ultra
+integrated graphics is called "Intel Arc", and the pack mistook it for a
+discrete rival card: a Core Ultra laptop with a discrete Radeon was refused the
+walkthrough although Radeon is what it plays on. Discrete Arc is now told from
+integrated by the series number in the name.
+
+**Sensor services were added to the never-touch list.** They were never in the
+presets, but they idle on a desktop, and that is where the habit of switching
+them off "as useless" comes from. On a laptop they drive auto-brightness and
+auto-rotation.
+
+**Turning off mouse acceleration on a laptop affects the touchpad too** — that
+is now written in the step's cost. Windows has one acceleration setting for
+every pointing device; it cannot be turned off for the mouse alone.
+
+**Fixed an undo bug that could delete a setting the pack never made.** Registry
+values named after a full file path were read with wildcard matching: a path
+like "D:\Games\[RUS] Shooter\game.exe" was not found, the backup recorded
+"there was no value", and the undo deleted a setting that existed before the
+pack ran.
+
+**The power check can no longer bring the wizard down.** On a machine where
+Windows will not let the helper code compile — corporate policy, a blocked
+compiler, an unavailable temp folder — the pre-flight died outright, and on the
+battery check of all things, which nobody asked for. Such a machine now simply
+says "could not be determined" and moves on.
+
+**The pre-flight no longer prints a green "on mains" when it could not tell.**
+There are three states, not two, and the third one now has its own name.
+
+**The right reason is printed under "cannot be compared".** It used to always
+say "this is a difference between two topologies" — under a pair that differed
+by power source, people read two mutually exclusive reasons in a row.
+
+**Diagnostics no longer pass "not determined" off as "no battery, on mains".**
+Whoever reads someone else's archive was reading that as fact.
+
+**The power module no longer leaves one hidden parameter exposed** after an
+undo on hybrid processors.
+
+**Fixed a drift between code and documentation.** Since version 3.9 the power
+module forbids parking for both classes of cores, while the description and
+both cards still promised the slow class was allowed to park.
+
+---
+
+**CS2 settings from a pro player's profile.** Module 15 has been rewritten and
+switched back on. You pick a player from the list — ZywOo, donk, m0NESY, s1mple,
+NiKo — and their sensitivity, viewmodel, crosshair, HUD and resolution are
+transferred onto your machine. The sensitivity is recalculated for your own DPI
+through eDPI: the same number at a different DPI would move the crosshair at a
+different speed, and "settings like ZywOo's" would be a lie. The settings go in
+as a block between markers, so anything you wrote in autoexec yourself stays
+where it is. This moves preferences rather than optimising anything, and the
+module says so plainly: a player's profile buys no frames.
+
+**Module 15 no longer writes into Steam's config.** That is what got it switched
+off: it edited CS2's launch options in localconfig.vdf and injected a game.cmd
+wrapper there, which ran a cmd script on every game launch. The wrapper existed
+for core isolation, which the pack has since turned off by default because it
+cost frames. Launch options are now only printed for you to paste yourself.
+
+**Convars are checked against the game's binaries.** Only what actually exists in
+the current build goes into the block. That is how it turned out that CS2 has no
+bob convar at all — not cl_bobcycle, not cl_usenewbob, none of them — even
+though "Bob" sits in the settings tables on every site. It cannot be
+transferred, and the pack does not pretend it was. The quality level scale was taken from the
+video_defaults presets inside the game's own files, so shadows, textures,
+shaders, particles, anti-aliasing and Reflex are written by the module itself.
+HDR and brightness stay manual, for reasons recorded in the key map.
+
+---
+
+**New module: Control Flow Guard for a DirectX 12 game.** Windows checks every
+indirect call inside a process, and the DX12 runtime and graphics drivers make a
+great many of them. Turning the check off for one game removes a share of the
+micro-stutters, though not for everyone, and the module says so plainly. The
+step only appears when a game with a DX12 mode is found; your own can be named
+explicitly. The bit positions were taken by measurement on a live system rather
+than from guides: the value matches byte for byte what Windows itself writes,
+and other protection settings on the same file survive.
+
+**The report opens last, not before the archive question.** The browser used to
+jump in front of the console at the exact moment the pack asked whether to
+collect a diagnostics archive. People went off to read the report, and the
+question stayed behind in a window they had already forgotten. Questions first
+now, browser after.
+
+---
+
 ## 4.4.8 - 26 August 2026
 
 **The system check now names your memory speed.** The pack collected the number

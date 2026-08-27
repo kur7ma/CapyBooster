@@ -160,6 +160,17 @@ Every module writes a backup before it changes anything, into the pack folder
 path intact. Each module has its own `revert.ps1`, and the run starts with a
 system restore point.
 
+**One click undoes everything.** `UNDO.cmd` sits next to `START.cmd` and returns
+the system to the state before the pack was ever run — not merely to the state
+before the last apply, which is a different thing once a module has been run
+twice.
+
+```
+UNDO.cmd
+START.cmd undo             the same thing
+START.cmd undo -Preview    print the plan and change nothing
+```
+
 ### It checks its own work afterwards
 
 ```
@@ -203,13 +214,15 @@ that wiped a setting.
 | `12-drivers` | Automatic driver installation | Drivers | low |
 | `13-nvidia-profile` | NVIDIA Profile Inspector, CS2 profile | GPU | low |
 | `14-mmcss` | MMCSS priorities for the Games task | CPU | low |
-| `15-cs2` | CS2 settings | Game | low |
+| `15-cs2` | CS2 settings from a pro player's profile | Game | low |
 | `16-cs2-bench` | Automated measurement in CS2 | Game | low |
 | `17-memory-hygiene` | One-time standby list purge, on demand | Memory | low |
 | `18-autobench` | Automatic responsiveness measurement | Baseline | low |
 | `19-priority-separation` | Scheduler quanta, high priority for your games | CPU | low |
 | `20-recording` | Xbox Game Bar background recording | GPU | low |
 | `21-amd-profile` | Radeon settings walkthrough for competitive play | GPU | low |
+| `22-cfg-dx12` | Control Flow Guard for a DirectX 12 game | Game | medium |
+| `23-power-share` | Power split between CPU and GPU on a laptop | GPU | low |
 | `95-report` | HTML report | Baseline | low |
 | `exp-timer` | Experiment: is TimerTool needed on Windows 11 | Experiment | low |
 
