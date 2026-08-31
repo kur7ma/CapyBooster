@@ -8,6 +8,45 @@ heading. The updater shows those headings before it installs anything.
 
 ---
 
+## 5.1.0 - 31 August 2026
+
+**The pack's power plan no longer lowers the GPU power policy.**
+
+The plan was created as a copy of the stock "Balanced" scheme. A copy inherits
+every parameter of its base, and the module only set a handful explicitly - the
+base decided the rest. Comparing all 32 parameters against "High Performance"
+produced exactly two disagreements, and both were graphics ones:
+
+- `AMD Power Slider -> Overlay` - 2 instead of 3;
+- `Switchable Dynamic Graphics -> Global Settings` - 2 instead of 3.
+
+Both lines are registered by the graphics driver rather than by Windows, and
+they are not visible in Control Panel. The consequence: in GPU-bound games the
+card could fail to reach full load while still drawing close to its full power.
+In CPU-bound games it did not show up at all.
+
+The base is now "High Performance". The minimum processor state (5%, the single
+parameter the old base was chosen for) is set explicitly on top of it - "High
+Performance" pins it to 100%, which works against boost on Zen 5. Both graphics
+lines are written explicitly too: they survive a change of base and a stock
+scheme rewritten by third-party "optimizers". The "Power plan" step is bumped to
+version 2, so the wizard offers it again to anyone who has already completed a
+run.
+
+**The system check now looks at the GPU power policy.** Separately from the
+module: any plan can lower it, and those lines are not visible in Control Panel.
+If the policy is below maximum, the check says so plainly and hands over the
+command. Where the subgroups do not exist - no AMD graphics, no switchable
+adapters - the line is not shown at all.
+
+**On AC the machine no longer sleeps or blanks the screen.** These timeouts used
+to be inherited from the base; they are now set explicitly: a wizard run takes
+about forty minutes and the machine should not fall asleep in the middle of it.
+The cost is stated honestly: the screen will not blank on its own, so lock the
+machine if you leave it unattended. The battery profile is untouched.
+
+---
+
 ## 5.0.2 - 27 August 2026
 
 **The wizard no longer starts twice at once.** It looked like this: after an
