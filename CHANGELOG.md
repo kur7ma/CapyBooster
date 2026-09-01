@@ -8,6 +8,45 @@ heading. The updater shows those headings before it installs anything.
 
 ---
 
+## 5.1.1 - 1 September 2026
+
+**The wizard no longer hangs when the update source is unreachable.** If the
+network does not let it through, the window could sit motionless without a
+single line in the console: the update check runs before the first output.
+
+The cause runs deeper than "no timeout was set". There was a timeout - six
+seconds - but the `Timeout` property of `HttpWebRequest` **does not cover proxy
+auto-detection**: before the request itself, .NET goes looking for WPAD, first
+over DHCP and then over DNS, and on a network with no route to the source that
+lookup holds the thread for minutes. The request is now made asynchronously and
+awaited with a hard wall-clock ceiling: whatever .NET does inside - proxy, DNS,
+TLS - the wizard waits no longer than that.
+
+The check also stopped being silent. A "checking the source" line is printed
+before going online, and if the source did not answer it says so, together with
+a hint to run `START.cmd -NoUpdateCheck` when there is no access at all. Before,
+"could not check" and "everything is current" looked identical: like nothing.
+
+**The update download got timeouts.** It went through `WebClient`, which has no
+timeout at all: agreeing to update while the source was unreachable left a
+process hanging forever. There are now two ceilings - one on establishing the
+connection, one on the whole download, because a connection can be established
+and then deliver one byte per minute.
+
+**Arguments are no longer lost when administrator rights are requested.** This
+fixes the most important door in the pack. Double-clicking a `.cmd` is never
+elevated, and the elevated relaunch was called without passing arguments - so on
+the normal path they all disappeared:
+
+`UNDO.cmd` -> `START.cmd undo` -> not admin -> relaunch with no arguments -> the
+`undo` keyword is gone -> **the wizard ran instead of the rollback**.
+
+Someone whose machine got worse after a run pressed "undo", approved the Windows
+prompt, and got the optimizer applying tweaks again. The `-NoUpdateCheck` switch
+was lost the same way.
+
+---
+
 ## 5.1.0 - 31 August 2026
 
 **The pack's power plan no longer lowers the GPU power policy.**
