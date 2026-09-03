@@ -8,6 +8,77 @@ heading. The updater shows those headings before it installs anything.
 
 ---
 
+## 5.2.0 - 3 September 2026
+
+**Core isolation works on dual-chiplet X3D CPUs (7950X3D, 9900X3D, 9950X3D).**
+Module 01 used to refuse them with "all cores are of one class" - and that was
+true: Windows reports `EfficiencyClass = 0` on all 32 threads, the chiplets are
+indistinguishable by that field. Only the L3 cache size tells them apart: 96 MB
+on the 3D V-Cache chiplet versus 32 MB on the plain one. The layout now handles
+this: system and background go to the chiplet without cache, the game gets the
+whole V-Cache chiplet, not a single core lost. The skew criterion is one for
+the entire pack - the same one the "Thread scheduler" section uses to recognise
+an X3D. Chiplets with *equal* cache (7950X, 9950X3D2 with V-Cache under both,
+Zen 2 with four domains) get no layout: which one is better for the game has
+not been measured, and isolation would take half the game's cores. The wizard,
+verify and the launch wrapper now ask the layout, not the hybrid flag. The
+branch is covered by a unit test on a 9950X3D topology; it has not been run on
+such a processor for real.
+
+**On a dual-chiplet X3D the fork the pack used to carry as a contradiction is
+now named.** AMD has its own way to split the chiplets: Windows Game Mode
+together with the 3D V-Cache service *parks* the no-cache chiplet while a game
+runs. Our isolation places the system and background on that very chiplet. The
+two do not work together: the background will not move onto a sleeping
+chiplet, and an assignment onto parked processors is silently ignored - the
+setter reports success, the threads run elsewhere. Before, verify on an X3D
+demanded "turn Game Mode on" while module 01 in effect
+required it off. The advice now depends on what was chosen: no isolation - Game
+Mode and the service are needed, as before; isolation applied - Game Mode must
+be off, and Game Mode on under isolation is named a conflict. Module 01 prints
+this fork explicitly when applied on an X3D. The module README has a "parking
+versus isolation" table.
+
+**verify distinguishes the recorded assignment from the fact of execution.**
+All the pack could do until now was read a process's mask and CPU Sets back.
+And reading back returns the *intention*: an assignment onto a parked chiplet
+is accepted and reads back without a single error, yet not one thread runs
+there. The "01 Core isolation" section now has two probes: a process of our
+own receives the game mask the same way a game
+under `game.cmd` does, spins for two seconds and records which processors it
+found itself on. The first probe answers "the mask holds": execution only on
+the game LPs. The second - "the reservation is in effect": a mixed mask "one
+system LP + game LPs" must execute only on the system LP; if the probe landed
+on reserved LPs, `ReservedCpuSets` is written but not in force, most often
+before a reboot. The line about a
+running game is renamed honestly: "the game is assigned LPs …", not "on the
+game cores". The same probe is in `GameLauncher.ps1 -Show`. A side fact from
+this machine: with no reservation at all, an assignment through CPU Sets alone
+also held the probe exactly on the assigned LP - CPU Sets are a hard constraint
+on Windows 11 25H2.
+
+**The pack now sees processor parking.** The `Parked` flag is read per
+processor from `SYSTEM_CPU_SET_INFORMATION`. verify warns when all system LPs
+of an applied layout are asleep (the background will not move there) and
+reports when an entire L3 domain is asleep (chiplet parking is active).
+`GameLauncher.ps1 -Show` prints the parked LPs. The structure layout was
+checked against live bytes on this machine; the bit order in the flags is
+taken from the documentation - no processor was parked at the time of the
+capture, so that remains an assumption until the first archive with parking.
+
+**A foreign CPU Sets writer is named as a fact.** `SetProcessDefaultCpuSets`
+is an API without an owner: last writer wins, no notifications. verify does
+one scan of all processes (no resident) and prints how many processes carry an
+assignment not made by the pack, and which.
+An assignment covering *all* processors constrains nothing and does not count
+as a writer - a stock `svchost` on this machine carries exactly that. The mask
+watchdog in the launch wrapper compares the game's CPU Sets every ~15 seconds
+with what it read back after assigning, and logs an overwrite - once per
+session, with the time and both sets. The affinity mask is untouched by this:
+it is the stronger of the two and it is what holds the game.
+
+---
+
 ## 5.1.1 - 1 September 2026
 
 **The wizard no longer hangs when the update source is unreachable.** If the
