@@ -10,64 +10,35 @@ heading. The updater shows those headings before it installs anything.
 
 ## 5.4.0 - 6 September 2026
 
-**Restore stopped losing other people's values and its own records.** Five
-modules restored the wrong thing. Module 02 read only the latest backup file,
-while `reapply.ps1` writes its own when it repairs a single device: if the
-apply had spread the GPU, USB and network and the repair touched only the GPU,
-the restore brought back one policy out of three. Module 07 did not know about
-the machine-wide store and, after the pack folder changed, answered "nothing to
-restore" while the backup sat in `%ProgramData%`. Module 09 deleted
-`PnPCapabilities` instead of restoring it, wiping the vendor's value. Module 08
-never recognised the default value: it looked for the name `(default)` while
-Windows reports it as an empty string, so the "leave someone else's value
-alone" branch never ran and the restore later wiped their data. The `-Modules`
-switch in the full restore filtered only registry backups: restoring one module
-still deleted the power plan, removed the Steam wrapper and unregistered the
-scheduled tasks.
+**Restore brings back what was there.** In five modules the restore did not
+return the original state: some values were lost, some settings that belonged to
+other tools were deleted instead of restored. The success message was printed
+either way, so there was no way to notice. A full restore now also removes the
+pack's power plan - it used to stay active.
 
-**A full restore now removes the pack's power plan.** It was searched for by
-the old name "WinOpt", while module 04 has been naming it "CapyBooster -
-Gaming" since 4.3.0. There were no matches, and the plan survived a full
-restore silently.
+**The MMCSS module no longer stops on a foreign value.** If the setting was put
+there by another tweaker rather than by the pack, the module ended with an error
+before it even said what it would cost.
 
-**The MMCSS module no longer crashes on a foreign value.** The parameter
-declares a set of allowed values, and the system re-validates it on every
-assignment to the variable. The module read the value from the registry and
-assigned it back into that same parameter: a value outside the set killed the
-module before it printed what it would cost.
-
-**The report.** The headline now accounts for regressions found. The document
+**The report.** The headline accounts for regressions found. The document
 language follows the chosen one instead of always being Russian. The computer
-name no longer reaches the html. The explanation for skipping isolation covers
-both conditions: a hybrid processor with four cores used to get a ready-made
-command that was guaranteed to refuse.
+name no longer reaches the report. The reason a step was skipped is stated more
+precisely: the report could previously offer a command that was certain to
+refuse.
 
-**Launch switches survive a reboot, and the update outcome is checked.** A run
-started as `-Auto` stopped after the reboot on the "step by step or all at
-once" question: only `-Resume` reached the scheduled task. The updater has nine
-early exits and had no exit code at all - the wizard printed "the pack has been
-updated" and restarted even after a failure.
+**Launch switches survive a reboot.** A run started in automatic mode used to
+stop and ask a question after the reboot. The mode is now kept.
 
-**Three new writes, all behind an explicit switch.** Virtual Machine Platform
-is removed by `-DisableVirtualMachinePlatform`: a separate confirmation that
-automatic mode does not swallow, and a restore that puts it back only if the
-pack was the one that removed it. Delivery Optimization is switched to HTTP
-only by `-DeliveryOptimization Off` - Windows and Store updates download more
-slowly without local peer sharing, that is the cost. Wi-Fi power saving enters
-the power plan only when an active wireless adapter is present. Nothing changes
-by default.
+**The update outcome is checked.** The wizard no longer reports a successful
+update when nothing was installed, and does not restart for nothing.
 
-**The system check gained nine lines.** Among them a `GameInput Service`
-disabled by someone else: it handles input in games that use it, and
-third-party debloat scripts turn it off. The pack does not touch it, but now
-shows it and hands over the command to bring it back.
+**Three new settings, all behind an explicit switch.** Nothing new happens by
+default. What each of them changes and what it costs is in the README of the
+module concerned and on the module card inside the report.
 
-**Third-party tweak collections were reviewed.** WinUtil, Sophia, Optimizer,
-Tron, Winaero, Wintoys, resident boosters, the NVIDIA and AMD panels and the
-stock Windows settings - 172 candidates. Five made it in; 138 were rejected or
-turned out to be what the pack already does. RSS and URO stayed as diagnostics
-without writing: their effect class is not established. What was rejected and
-why is in the README of the modules concerned.
+**The system check gained nine lines.** Among them a warning about the input
+service that third-party "optimizers" switch off: the pack does not touch it,
+but now shows it and suggests how to bring it back.
 
 ---
 
@@ -113,98 +84,62 @@ library not yet loaded. The variable is now read directly, under both names.
 ## 5.3.0 - 6 September 2026
 
 **Launch switches survive a reboot.** A run started as `-Auto` used to stop
-after the reboot on the "step by step or all at once" question: only `-Resume`
-reached the scheduled task. The cause is `$PSBoundParameters` inside a function
-with no `param()`. That is the function's own parameter set, not the script's,
-and it is always empty: two keys at script level, zero inside the function. The
-switches are now passed explicitly and all of them arrive: `-Auto`,
-`-Detailed`, `-NoBench`, `-NoAutoBench`, `-NoUpdateCheck`, `-ServicesPreset`,
-`-Lang`.
+after the reboot on the "step by step or all at once" question: the mode never
+reached the second half of the setup. All switches now carry over, including the
+language choice and the services preset.
 
-**The wizard no longer reports an update that did not happen.** The updater has
-nine early exits: no source configured, source unreachable, a login page
-instead of version.json, the archive failed to download, the archive turned out
-not to be the pack. It had no exit code, the wizard did not read one, and it
-printed "The pack has been updated. Restarting the wizard…" regardless - people
-got a success report and the same version after the restart. The updater now
-returns 0, 1 or 2, and the wizard decides by that code: restart, stay quiet, or
-say the update did not install and the run continues on the current version.
+**The wizard no longer reports an update that did not happen.** An update can
+fail for several reasons - no access to the source, the source answering with
+something else, the archive failing to download. The wizard printed "The pack
+has been updated. Restarting the wizard…" regardless, so people got a success
+report and the same version after the restart. The outcome is now checked: if
+the update did not install, it says so and the run continues on the current
+version.
 
 **The "checking the source" line is visible again.** It was added in 5.1.1 so
-the window would not look frozen while a network request is in flight. It was
-printed at INFO level without `-Always`, and such lines only show with
-`-Detailed` - so in normal mode it was not there at all.
+the window would not look frozen while a network request is in flight - but in
+normal mode it was not shown at all.
 
 ---
 
 ## 5.2.0 - 3 September 2026
 
 **Core isolation works on dual-chiplet X3D CPUs (7950X3D, 9900X3D, 9950X3D).**
-Module 01 used to refuse them with "all cores are of one class" - and that was
-true: Windows reports `EfficiencyClass = 0` on all 32 threads, the chiplets are
-indistinguishable by that field. Only the L3 cache size tells them apart: 96 MB
-on the 3D V-Cache chiplet versus 32 MB on the plain one. The layout now handles
-this: system and background go to the chiplet without cache, the game gets the
-whole V-Cache chiplet, not a single core lost. The skew criterion is one for
-the entire pack - the same one the "Thread scheduler" section uses to recognise
-an X3D. Chiplets with *equal* cache (7950X, 9950X3D2 with V-Cache under both,
-Zen 2 with four domains) get no layout: which one is better for the game has
-not been measured, and isolation would take half the game's cores. The wizard,
-verify and the launch wrapper now ask the layout, not the hybrid flag. The
-branch is covered by a unit test on a 9950X3D topology; it has not been run on
-such a processor for real.
+The module used to refuse them: Windows reports all cores as identical, so by
+its data the chiplets are indistinguishable. Cache size tells them apart, and
+the layout now handles that: system and background go to the chiplet without
+cache, the game gets the cached chiplet in full, not a single core lost.
+Processors with equal cache on both chiplets get no layout: which one is better
+for the game has not been measured, and isolation would take half the game's
+cores. The branch is covered by a unit test; it has not been run on such a
+processor for real.
 
 **On a dual-chiplet X3D the fork the pack used to carry as a contradiction is
-now named.** AMD has its own way to split the chiplets: Windows Game Mode
-together with the 3D V-Cache service *parks* the no-cache chiplet while a game
-runs. Our isolation places the system and background on that very chiplet. The
-two do not work together: the background will not move onto a sleeping
-chiplet, and an assignment onto parked processors is silently ignored - the
-setter reports success, the threads run elsewhere. Before, verify on an X3D
-demanded "turn Game Mode on" while module 01 in effect
-required it off. The advice now depends on what was chosen: no isolation - Game
-Mode and the service are needed, as before; isolation applied - Game Mode must
-be off, and Game Mode on under isolation is named a conflict. Module 01 prints
-this fork explicitly when applied on an X3D. The module README has a "parking
-versus isolation" table.
+now named.** AMD has its own way to split the chiplets - Windows Game Mode
+together with the 3D V-Cache service. Our isolation and that do not work
+together: enabling one quietly cancels the other. The system check used to
+demand Game Mode while the isolation module effectively required it off. The
+advice now depends on what was chosen, and Game Mode with isolation applied is
+called a conflict. The module README has a table of what does not combine with
+what.
 
-**verify distinguishes the recorded assignment from the fact of execution.**
-All the pack could do until now was read a process's mask and CPU Sets back.
-And reading back returns the *intention*: an assignment onto a parked chiplet
-is accepted and reads back without a single error, yet not one thread runs
-there. The "01 Core isolation" section now has two probes: a process of our
-own receives the game mask the same way a game
-under `game.cmd` does, spins for two seconds and records which processors it
-found itself on. The first probe answers "the mask holds": execution only on
-the game LPs. The second - "the reservation is in effect": a mixed mask "one
-system LP + game LPs" must execute only on the system LP; if the probe landed
-on reserved LPs, `ReservedCpuSets` is written but not in force, most often
-before a reboot. The line about a
-running game is renamed honestly: "the game is assigned LPs …", not "on the
-game cores". The same probe is in `GameLauncher.ps1 -Show`. A side fact from
-this machine: with no reservation at all, an assignment through CPU Sets alone
-also held the probe exactly on the assigned LP - CPU Sets are a hard constraint
-on Windows 11 25H2.
+**The system check tells a written assignment apart from actual execution.** It
+used to read back what it had written - which is intent, not result: an
+assignment onto a sleeping chiplet is accepted and reads back without a single
+error even though no thread runs there. The check now runs a short probe and
+looks at which cores it actually found itself on. It reports separately when a
+reservation is written but not yet in force - usually until a reboot.
 
-**The pack now sees processor parking.** The `Parked` flag is read per
-processor from `SYSTEM_CPU_SET_INFORMATION`. verify warns when all system LPs
-of an applied layout are asleep (the background will not move there) and
-reports when an entire L3 domain is asleep (chiplet parking is active).
-`GameLauncher.ps1 -Show` prints the parked LPs. The structure layout was
-checked against live bytes on this machine; the bit order in the flags is
-taken from the documentation - no processor was parked at the time of the
-capture, so that remains an assumption until the first archive with parking.
+**The pack sees processor parking.** The check warns when the cores handed to
+the system and background are asleep - background work will not move there - and
+reports when a whole chiplet is asleep.
 
-**A foreign CPU Sets writer is named as a fact.** `SetProcessDefaultCpuSets`
-is an API without an owner: last writer wins, no notifications. verify does
-one scan of all processes (no resident) and prints how many processes carry an
-assignment not made by the pack, and which.
-An assignment covering *all* processors constrains nothing and does not count
-as a writer - a stock `svchost` on this machine carries exactly that. The mask
-watchdog in the launch wrapper compares the game's CPU Sets every ~15 seconds
-with what it read back after assigning, and logs an overwrite - once per
-session, with the time and both sets. The affinity mask is untouched by this:
-it is the stronger of the two and it is what holds the game.
+**A third-party owner of the assignment is stated as fact.** The mechanism the
+pack uses to place a game on chosen cores has no owner: whoever wrote last wins,
+and there are no notifications. The system check prints how many processes carry
+an assignment that is not the pack's, and which. The launch wrapper compares the
+game's assignment with its own every few seconds and logs it when something
+overwrites it.
 
 ---
 
@@ -212,38 +147,29 @@ it is the stronger of the two and it is what holds the game.
 
 **The wizard no longer hangs when the update source is unreachable.** If the
 network does not let it through, the window could sit motionless without a
-single line in the console: the update check runs before the first output.
+single line in the console: the update check runs before the first output. A
+timeout was set, but it did not cover everything that happens before the request
+itself. The wait now has a hard ceiling: however long the system takes, the
+wizard waits no longer than that.
 
-The cause runs deeper than "no timeout was set". There was a timeout - six
-seconds - but the `Timeout` property of `HttpWebRequest` **does not cover proxy
-auto-detection**: before the request itself, .NET goes looking for WPAD, first
-over DHCP and then over DNS, and on a network with no route to the source that
-lookup holds the thread for minutes. The request is now made asynchronously and
-awaited with a hard wall-clock ceiling: whatever .NET does inside - proxy, DNS,
-TLS - the wizard waits no longer than that.
+The check also stopped being silent: a line is printed before going online, and
+if the source did not answer it says so, together with a hint to run
+`START.cmd -NoUpdateCheck` when there is no access at all.
 
-The check also stopped being silent. A "checking the source" line is printed
-before going online, and if the source did not answer it says so, together with
-a hint to run `START.cmd -NoUpdateCheck` when there is no access at all. Before,
-"could not check" and "everything is current" looked identical: like nothing.
-
-**The update download got timeouts.** It went through `WebClient`, which has no
-timeout at all: agreeing to update while the source was unreachable left a
-process hanging forever. There are now two ceilings - one on establishing the
-connection, one on the whole download, because a connection can be established
-and then deliver one byte per minute.
+**The update download got timeouts.** There were none at all before: agreeing to
+update while the source was unreachable left a process hanging forever. Both the
+time to establish a connection and the time for the whole download are now
+bounded - a connection can be established and then deliver one byte per minute.
 
 **Arguments are no longer lost when administrator rights are requested.** This
-fixes the most important door in the pack. Double-clicking a `.cmd` is never
-elevated, and the elevated relaunch was called without passing arguments - so on
-the normal path they all disappeared:
+fixes the most important door in the pack. Double-clicking a shortcut is never
+elevated, and the elevated relaunch lost everything that had been passed to it:
 
-`UNDO.cmd` -> `START.cmd undo` -> not admin -> relaunch with no arguments -> the
-`undo` keyword is gone -> **the wizard ran instead of the rollback**.
+`UNDO.cmd` → undo → not admin → relaunch with no arguments → **the wizard ran
+instead of the rollback**.
 
 Someone whose machine got worse after a run pressed "undo", approved the Windows
-prompt, and got the optimizer applying tweaks again. The `-NoUpdateCheck` switch
-was lost the same way.
+prompt, and got the optimizer applying tweaks again.
 
 ---
 
@@ -355,8 +281,7 @@ which put it out of reach of exactly the person who needs it: someone whose
 machine just got worse and who is not going to go reading documentation at
 that moment.
 
-**What exactly was renamed.** The main script is capybooster.ps1, the library
-CapyBooster.psm1, the log capybooster.log; the restore point, the scheduled task
+**What exactly was renamed.** The main script is capybooster. The main script and the run log were renamed to match the current pack name.log; the restore point, the scheduled task
 and the measurement window are renamed too. The old name stays where it
 recognises traces of older versions: task names, the machine-wide store, the
 marker in the CS2 config. WINOPT_ variables you set by hand keep working — the
