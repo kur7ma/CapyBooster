@@ -8,6 +8,37 @@ heading. The updater shows those headings before it installs anything.
 
 ---
 
+## 5.4.1 - 6 September 2026
+
+**The system check no longer calls the pack's own work foreign.** The game
+launch wrapper and the resume-after-reboot task were reported as traces of some
+other tool, and the check offered to remove them. The cause was in how paths
+were compared, not in the traces themselves.
+
+**Restore now deletes values whose name contains square brackets.** Such names
+appear when the path to a game contains brackets. The deletion used to silently
+do nothing while the log and the counter reported success.
+
+**Restore stopped wiping other tools' interrupt settings.** The rule by which
+the pack recognises its own traces was too broad: the same entries are written
+by the inbox drivers of some network and storage controllers. Only what the
+pack actually writes now counts as its own.
+
+**A backup is not lost when the pack folder is read-only.** A failed first write
+used to abort the whole save, leaving no copy anywhere although the system had
+already been changed. The two attempts are now independent. Reading backups also
+looks into the previous machine-wide store, not only the current one.
+
+**The wizard does not die on machines with restricted compilation.** Keeping the
+machine awake during a run could abort everything before the first tweak - on
+machines where security software or policy forbids compiling on the fly.
+
+**System utility output is read correctly.** On both Russian and non-Russian
+systems the text came back in the wrong encoding, which made some checks answer
+quietly wrong. Verified by measurement on the build machine.
+
+---
+
 ## 5.4.0 - 6 September 2026
 
 **Restore brings back what was there.** In five modules the restore did not
