@@ -8,6 +8,33 @@ heading. The updater shows those headings before it installs anything.
 
 ---
 
+## 5.3.0 - 6 September 2026
+
+**Launch switches survive a reboot.** A run started as `-Auto` used to stop
+after the reboot on the "step by step or all at once" question: only `-Resume`
+reached the scheduled task. The cause is `$PSBoundParameters` inside a function
+with no `param()`. That is the function's own parameter set, not the script's,
+and it is always empty: two keys at script level, zero inside the function. The
+switches are now passed explicitly and all of them arrive: `-Auto`,
+`-Detailed`, `-NoBench`, `-NoAutoBench`, `-NoUpdateCheck`, `-ServicesPreset`,
+`-Lang`.
+
+**The wizard no longer reports an update that did not happen.** The updater has
+nine early exits: no source configured, source unreachable, a login page
+instead of version.json, the archive failed to download, the archive turned out
+not to be the pack. It had no exit code, the wizard did not read one, and it
+printed "The pack has been updated. Restarting the wizard…" regardless - people
+got a success report and the same version after the restart. The updater now
+returns 0, 1 or 2, and the wizard decides by that code: restart, stay quiet, or
+say the update did not install and the run continues on the current version.
+
+**The "checking the source" line is visible again.** It was added in 5.1.1 so
+the window would not look frozen while a network request is in flight. It was
+printed at INFO level without `-Always`, and such lines only show with
+`-Detailed` - so in normal mode it was not there at all.
+
+---
+
 ## 5.2.0 - 3 September 2026
 
 **Core isolation works on dual-chiplet X3D CPUs (7950X3D, 9900X3D, 9950X3D).**
