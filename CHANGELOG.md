@@ -8,6 +8,108 @@ heading. The updater shows those headings before it installs anything.
 
 ---
 
+## 5.4.0 - 6 September 2026
+
+**Restore stopped losing other people's values and its own records.** Five
+modules restored the wrong thing. Module 02 read only the latest backup file,
+while `reapply.ps1` writes its own when it repairs a single device: if the
+apply had spread the GPU, USB and network and the repair touched only the GPU,
+the restore brought back one policy out of three. Module 07 did not know about
+the machine-wide store and, after the pack folder changed, answered "nothing to
+restore" while the backup sat in `%ProgramData%`. Module 09 deleted
+`PnPCapabilities` instead of restoring it, wiping the vendor's value. Module 08
+never recognised the default value: it looked for the name `(default)` while
+Windows reports it as an empty string, so the "leave someone else's value
+alone" branch never ran and the restore later wiped their data. The `-Modules`
+switch in the full restore filtered only registry backups: restoring one module
+still deleted the power plan, removed the Steam wrapper and unregistered the
+scheduled tasks.
+
+**A full restore now removes the pack's power plan.** It was searched for by
+the old name "WinOpt", while module 04 has been naming it "CapyBooster -
+Gaming" since 4.3.0. There were no matches, and the plan survived a full
+restore silently.
+
+**The MMCSS module no longer crashes on a foreign value.** The parameter
+declares a set of allowed values, and the system re-validates it on every
+assignment to the variable. The module read the value from the registry and
+assigned it back into that same parameter: a value outside the set killed the
+module before it printed what it would cost.
+
+**The report.** The headline now accounts for regressions found. The document
+language follows the chosen one instead of always being Russian. The computer
+name no longer reaches the html. The explanation for skipping isolation covers
+both conditions: a hybrid processor with four cores used to get a ready-made
+command that was guaranteed to refuse.
+
+**Launch switches survive a reboot, and the update outcome is checked.** A run
+started as `-Auto` stopped after the reboot on the "step by step or all at
+once" question: only `-Resume` reached the scheduled task. The updater has nine
+early exits and had no exit code at all - the wizard printed "the pack has been
+updated" and restarted even after a failure.
+
+**Three new writes, all behind an explicit switch.** Virtual Machine Platform
+is removed by `-DisableVirtualMachinePlatform`: a separate confirmation that
+automatic mode does not swallow, and a restore that puts it back only if the
+pack was the one that removed it. Delivery Optimization is switched to HTTP
+only by `-DeliveryOptimization Off` - Windows and Store updates download more
+slowly without local peer sharing, that is the cost. Wi-Fi power saving enters
+the power plan only when an active wireless adapter is present. Nothing changes
+by default.
+
+**The system check gained nine lines.** Among them a `GameInput Service`
+disabled by someone else: it handles input in games that use it, and
+third-party debloat scripts turn it off. The pack does not touch it, but now
+shows it and hands over the command to bring it back.
+
+**Third-party tweak collections were reviewed.** WinUtil, Sophia, Optimizer,
+Tron, Winaero, Wintoys, resident boosters, the NVIDIA and AMD panels and the
+stock Windows settings - 172 candidates. Five made it in; 138 were rejected or
+turned out to be what the pack already does. RSS and URO stayed as diagnostics
+without writing: their effect class is not established. What was rejected and
+why is in the README of the modules concerned.
+
+---
+
+## 5.3.1 - 6 September 2026
+
+**A full restore now removes the pack's power plan.** The plan is found by name,
+and the pattern still carried the old name, "WinOpt". Module 04 has been naming
+it "CapyBooster - Gaming" since 4.3.0, so there were no matches at all and the
+plan never reached the restore list: people ran a full restore and kept the
+pack's active power plan forever, without a single message. Checked on the build
+machine: the old pattern finds zero plans, the new one finds exactly one.
+
+**The MMCSS module no longer crashes on a foreign SystemResponsiveness value.**
+The parameter declares a set of allowed values, and PowerShell re-validates that
+set on every assignment to the variable, not only when arguments are parsed. The
+module read the value from the registry and assigned it back into that same
+parameter - if someone's registry held a value outside the set (1, 7 and
+0xFFFFFFFF turn up in third-party guides), the module died before it even
+printed what it would cost. The value read from the system now lives in a
+separate variable.
+
+**The GPU interrupt core search takes the median, not the best run.** With an
+even number of passes the old line took the upper of two values. The default is
+two passes, so each core was judged by its best result, and a core with one good
+and one bad run beat a steady one. It now uses the shared median from the
+benchmark library - the same one bench.ps1 uses.
+
+**The leftover check no longer reports unreadable as fine.** `bcdedit` cannot
+open the BCD store without administrator rights, and its exit code was not
+checked: the timer names were not found in the refusal text, so the section
+answered "BCD timers are fine". The `-Check` mode, which the README suggests
+running from an ordinary console, gave a false green on any machine. It now says
+what happened: could not read, rights required.
+
+**The memory cleanup task runs under SYSTEM again.** Module 17 read an
+environment variable through a library function, while the library is imported
+twenty lines further down - in a fresh process that call failed. The
+`CapyBooster-PurgeStandby` task starts exactly that way: a new process with the
+library not yet loaded. The variable is now read directly, under both names.
+
+---
+
 ## 5.3.0 - 6 September 2026
 
 **Launch switches survive a reboot.** A run started as `-Auto` used to stop
