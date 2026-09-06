@@ -8,6 +8,32 @@ heading. The updater shows those headings before it installs anything.
 
 ---
 
+## 5.5.0 - 6 September 2026
+
+**New step: optimizations for windowed games.** Windows 11 has a stock switch
+that speeds up how the picture reaches the screen in games running in a window
+or borderless window: the frame gets there without an extra intermediate step.
+It shows up as responsiveness to the mouse, not as average FPS, and does not
+concern exclusive fullscreen at all.
+
+The step is not there to improve anything: the switch is on out of the box, and
+on an untouched machine the step says exactly that and writes nothing. It is
+there to notice that the switch was turned OFF. Third-party "optimizers" do
+that along with disabling desktop effects; people are not told, and by then the
+lost responsiveness can no longer be traced back to someone else's script.
+
+If the switch was off, the step turns it back on and leaves the neighbouring
+graphics settings alone: the default graphics card, Auto HDR and the variable
+refresh rate optimization stay as they are - those are a matter of the person
+and their monitor. Per-game settings are left alone too.
+
+Undo restores exactly what was there before the step, not "on": the person may
+have turned the switch off themselves, and it is their choice that has to come
+back. The system check now reports this step, and on Windows 10 it plainly says
+the setting does not exist there.
+
+---
+
 ## 5.4.2 - 6 September 2026
 
 **An English run is now English all the way through.** The restore and

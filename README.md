@@ -75,6 +75,7 @@ HTML report.
    ok  MMCSS: multimedia priorities
        Scheduler quanta and game priority
        Background video recording
+       Optimizations for windowed games
        Memory hygiene: a pre-game cleanup task
   -- Wrap-up --
        HTML report
@@ -223,6 +224,7 @@ that wiped a setting.
 | `21-amd-profile` | Radeon settings walkthrough for competitive play | GPU | low |
 | `22-cfg-dx12` | Control Flow Guard for a DirectX 12 game | Game | medium |
 | `23-power-share` | Power split between CPU and GPU on a laptop | GPU | low |
+| `24-dxgi-windowed` | Windows 11 optimizations for windowed games | GPU | low |
 | `95-report` | HTML report | Baseline | low |
 | `exp-timer` | Experiment: is TimerTool needed on Windows 11 | Experiment | low |
 
