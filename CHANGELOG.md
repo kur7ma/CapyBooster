@@ -138,8 +138,7 @@ separate variable.
 **The GPU interrupt core search takes the median, not the best run.** With an
 even number of passes the old line took the upper of two values. The default is
 two passes, so each core was judged by its best result, and a core with one good
-and one bad run beat a steady one. It now uses the shared median from the
-benchmark library - the same one bench.ps1 uses.
+and one bad run beat a steady one.
 
 **The leftover check no longer reports unreadable as fine.** `bcdedit` cannot
 open the BCD store without administrator rights, and its exit code was not
