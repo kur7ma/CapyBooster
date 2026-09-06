@@ -8,6 +8,24 @@ heading. The updater shows those headings before it installs anything.
 
 ---
 
+## 5.4.2 - 6 September 2026
+
+**An English run is now English all the way through.** The restore and
+diagnostics scripts printed their questions and key hints in Russian only, even
+with English chosen in the wizard: people got Russian text in the middle of an
+English run, precisely where an answer was expected. More than a hundred and
+fifty strings were moved; verified by running in both languages.
+
+The same applied to the verdict printed after each measurement, the description
+of a changed processor topology, and the confirmations in automatic mode - those
+stayed Russian too.
+
+Rare error messages in those scripts are still Russian: they are the branches
+reached when the restore itself fails, and translating them in haste is more
+dangerous than leaving them.
+
+---
+
 ## 5.4.1 - 6 September 2026
 
 **The system check no longer calls the pack's own work foreign.** The game
