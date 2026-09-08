@@ -8,6 +8,35 @@ heading. The updater shows those headings before it installs anything.
 
 ---
 
+## 5.5.1 - 8 September 2026
+
+**Diagnostics archives no longer arrive unreadable.** On machines where the
+regional format and the language for non-Unicode programs are set differently,
+the fresh system check inside the archive turned into a mess of symbols. Found
+in an archive someone sent in, where exactly that happened. The pack reads the
+answers of system utilities the same way, so on such machines some checks could
+quietly answer wrong - fixed together.
+
+**Anonymising no longer eats hardware names.** The account name is replaced
+throughout the archive as a whole word. When it matched part of the processor
+or graphics card name, the model vanished from the archive and the word "user"
+stood in its place - in four places at once, the hardware card and the report
+included. That is precisely the diagnostic information the archive is collected
+for. Processor and graphics card names are now protected from the replacement;
+in paths and in the rest of the text the name is masked as before.
+
+**"Run not finished" no longer alarms for nothing.** The archive is collected by
+the wizard's last step, and the wizard marks the run finished only after it.
+Because of that, everyone whose run went through without a single error saw a
+warning telling them to resume. The pack now tells a run that is in progress
+right now from an abandoned one: it says so in the first case, and keeps the
+warning in the second.
+
+**Windows Server is no longer named twice.** The version line printed the build
+number twice in a row.
+
+---
+
 ## 5.5.0 - 6 September 2026
 
 **New step: optimizations for windowed games.** Windows 11 has a stock switch
