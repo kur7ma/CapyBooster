@@ -8,6 +8,28 @@ heading. The updater shows those headings before it installs anything.
 
 ---
 
+## 5.5.2 - 22 September 2026
+
+**Turning off virtualization-based security no longer slips past the
+anti-cheat.** When the machine has a game whose anti-cheat requires memory
+integrity to be on - Valorant today - the pack warned about it before the step.
+But in the no-questions mode that warning scrolled away together with the
+automatic yes, and people found out only after the reboot, when the game would
+not start. Exactly the case the warning was put there for.
+
+The question is now asked even in the no-questions mode: it can still be turned
+off, but only by hand and deliberately. The list of such games comes from their
+profiles, so a game with the same anti-cheat is picked up on its own, with no
+change to the pack. Found in a run someone sent in, where that is what happened.
+
+**Diagnostics archives no longer misreport how the run went.** The no-questions
+mode is also chosen from the start menu, not only by a launch switch - and in
+that case the archive still said "with questions". From such an archive there
+was no way to tell whether the person answered or the answers were given for
+them, and for reading someone else's run that is the first thing you need.
+
+---
+
 ## 5.5.1 - 8 September 2026
 
 **Diagnostics archives no longer arrive unreadable.** On machines where the
