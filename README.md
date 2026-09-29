@@ -221,12 +221,14 @@ that wiped a setting.
 | `18-autobench` | Automatic responsiveness measurement | Baseline | low |
 | `19-priority-separation` | Scheduler quanta, high priority for your games | CPU | low |
 | `20-recording` | Xbox Game Bar background recording | GPU | low |
-| `21-amd-profile` | Radeon settings walkthrough for competitive play | GPU | low |
+| `21-amd-profile` | Global Radeon settings for competitive play | GPU | medium |
 | `22-cfg-dx12` | Control Flow Guard for a DirectX 12 game | Game | medium |
 | `23-power-share` | Power split between CPU and GPU on a laptop | GPU | low |
 | `24-dxgi-windowed` | Windows 11 optimizations for windowed games | GPU | low |
 | `95-report` | HTML report | Baseline | low |
 | `exp-timer` | Experiment: is TimerTool needed on Windows 11 | Experiment | low |
+| `exp-mpo` | Experiment: should multiplane overlays be turned off | Experiment | medium |
+| `exp-memcomp` | Experiment: should memory compression be turned off | Experiment | low |
 
 ---
 

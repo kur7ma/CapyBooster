@@ -8,6 +8,55 @@ heading. The updater shows those headings before it installs anything.
 
 ---
 
+## 5.6.0 - 29 September 2026
+
+**The pack now sets Radeon settings itself.** Before, the step only described what
+to open in the AMD app. Now it turns off Chill, Boost, Enhanced Sync and the
+driver's frame limiter, sets vertical sync to "always off" and turns Anti-Lag on.
+Before writing it shows a plan and asks, saves the previous values, and undo
+restores everything as it was.
+
+The pack never touches the Anti-Lag Next mode, and if you have it selected the
+ordinary Anti-Lag is not turned on. The settings apply to the whole graphics card,
+not to a single game. Texture filtering quality, surface format and FSR stay
+manual: AMD offers no way to write them.
+
+The write was tested on a stand-in driver, not on a live Radeon. So the first run
+is best done in preview mode: it shows the plan and changes nothing.
+
+**Two experiments: multiplane overlays (MPO) and memory compression.** People
+recommend turning both off, but the gain has never been measured, and for the
+first even the direction of the effect is disputed. So these are experiments, not
+tweaks. The wizard steps only show what is set now and a measurement protocol with
+a criterion declared in advance. Changing the setting is a separate command that
+the step prints itself.
+
+For memory compression the step first shows how much the compressed store holds
+right now. If it is nearly empty, there is nothing to turn off. At 16 GB of memory
+and below turning it off is refused - there it only hurts. Undo restores what was
+there before you.
+
+**The system check shows other people's settings.** If MPO or memory compression
+was turned off by someone else, such as a third-party "optimizer", the check now
+says so instead of staying silent.
+
+**The video recording step warns owners of two-chiplet X3D processors.** The AMD
+driver picks the chiplet for a game by a signal from Game Bar. Whether turning
+recording off affects that signal is not established, so this is a warning, not a
+refusal.
+
+**The CS2 settings snapshot sees more.** Brightness, contrast, player contrast
+boost and damage prediction live in a separate file that was never captured, so an
+edit in the game produced no line in the comparison. The "after" comparison mode
+itself crashed on every run - fixed.
+
+**Descriptions are more precise.** What lies behind 8x anti-aliasing in the player
+profiles, why the frame cap in a profile and the general advice differ, what
+changes in NVIDIA settings after a clean driver install. A misleading sentence in
+the AMD description about a "second version" of Anti-Lag is corrected.
+
+---
+
 ## 5.5.2 - 22 September 2026
 
 **Turning off virtualization-based security no longer slips past the
