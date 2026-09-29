@@ -8,6 +8,37 @@ heading. The updater shows those headings before it installs anything.
 
 ---
 
+## 5.6.1 - 30 September 2026
+
+**The system check no longer raises a false alarm about Valorant.** If
+virtualization-based security (VBS) was already off before the pack, the check
+put up a red "conflict with Valorant" line and advised an undo that does not turn
+VBS on. The pack had turned nothing off in that case, it had only pinned what was
+already off. Now red is left only for the situation where the pack itself turned
+off a running VBS, and everything else is a warning with an accurate hint.
+
+**The step that turns VBS off does not pin the off state when a game with that
+kind of anti-cheat is installed.** There is nothing to turn off, no gain, and the
+ban on turning it back on could get in the game's way if Windows one day enables
+VBS by itself. The step explains why and writes nothing. It also stopped writing
+values that are already set and rewriting the boot record when it is already right.
+
+**The Windows 11 tweaks skip what does not exist on Windows 10.** The old context
+menu and the widgets button exist only in Windows 11. On Windows 10 the pack wrote
+them for nothing and reported them as applied. Now it skips them and says so.
+
+**The restore point question is always asked.** If creating one failed, the pack
+used to answer "continue" by itself in automatic mode. Now it asks you.
+
+**The memory check is more accurate.** On a laptop it no longer tells you to turn on
+the XMP profile in the BIOS, where there is usually no such option. It does warn
+about two memory modules of different sizes: then usually only part of the memory
+runs in dual-channel mode.
+
+**A typo was fixed** in the hint about the GameInput service.
+
+---
+
 ## 5.6.0 - 29 September 2026
 
 **The pack now sets Radeon settings itself.** Before, the step only described what
