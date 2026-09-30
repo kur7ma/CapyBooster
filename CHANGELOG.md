@@ -8,6 +8,14 @@ heading. The updater shows those headings before it installs anything.
 
 ---
 
+## 5.6.2 - 30 September 2026
+
+**The GPU interrupt core search no longer draws conclusions from empty measurements.** For one player, two of twelve measurements were collected, and the module announced that the cores made no difference. Now each measurement is preceded by a check that frames are actually coming through, a failed measurement is retried up to three times, and after three empty iterations in a row the search stops. A verdict is given only when every core has data and at least three quarters of the measurements were collected. Otherwise the module says so, pins nothing and restores the previous settings.
+
+**The reason a measurement failed is now written to the log.** The load reports what it renders on (the GPU or a software renderer), how many frames it produced and whether its window had focus. Why frames were not collected for that player is still unknown: the failure did not reproduce on a live machine. The next such case will show the cause.
+
+---
+
 ## 5.6.1 - 30 September 2026
 
 **The system check no longer raises a false alarm about Valorant.** If
