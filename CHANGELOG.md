@@ -8,6 +8,24 @@ heading. The updater shows those headings before it installs anything.
 
 ---
 
+## 5.6.3 - 29 October 2026
+
+**The pro player's crosshair is no longer copied.** CS2 has changed its
+crosshair system, and the player crosshairs stored in the pack do not fit it.
+Until we update them, the player settings step copies only sensitivity, the
+weapon model, the HUD and graphics, and leaves your crosshair alone. If the pack
+gave you a player's crosshair before, the wizard will offer that step again;
+change the crosshair itself in the game.
+
+**The power scheme no longer saves energy.** On mains power the CPU and the
+drives now run at full speed, with no power saving modes. Those who installed
+the pack long ago still had power saving settings from old versions in their
+scheme, and on one computer that seems to have caused hard freezes under long
+full load. The wizard will offer the power step again and fix the old scheme.
+On a laptop running on battery nothing changes.
+
+---
+
 ## 5.6.2 - 30 September 2026
 
 **The GPU interrupt core search no longer draws conclusions from empty measurements.** For one player, two of twelve measurements were collected, and the module announced that the cores made no difference. Now each measurement is preceded by a check that frames are actually coming through, a failed measurement is retried up to three times, and after three empty iterations in a row the search stops. A verdict is given only when every core has data and at least three quarters of the measurements were collected. Otherwise the module says so, pins nothing and restores the previous settings.
