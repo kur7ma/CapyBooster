@@ -8,6 +8,31 @@ heading. The updater shows those headings before it installs anything.
 
 ---
 
+## 5.6.4 - 31 October 2026
+
+**The power scheme installs again.** On Windows 10 the power scheme step failed
+with an error on every run, and the pack's scheme never appeared. The wizard will
+offer this step again.
+
+**The game is back ahead of background work.** The pack set a scheduler option
+it described as "short quanta and an advantage for the game", while in fact it
+put the game and background work on equal terms. It now sets the factory value
+for desktop Windows, where the game gets three times as much time as background
+work. This adds nothing beyond how Windows works out of the box. The wizard will
+offer this step again.
+
+**The report tells you when a step did not complete.** A failed step used to show
+only in the log, with "System configured" at the top of the report. Now the
+failure goes into the report headline along with the error text.
+
+**A failed step no longer counts as done.** Most game and system steps are
+optional. When one of them hit an error, the wizard recorded it as completed and
+never came back to it, and the report said nothing. The run still carries on, but
+the step now shows up in the end-of-run summary and in the report, and the wizard
+retries it on the next run.
+
+---
+
 ## 5.6.3 - 29 October 2026
 
 **The pro player's crosshair is no longer copied.** CS2 has changed its
