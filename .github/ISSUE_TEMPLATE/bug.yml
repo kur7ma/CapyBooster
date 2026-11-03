@@ -15,8 +15,8 @@ body:
     id: version
     attributes:
       label: "Версия пака / Pack version"
-      description: "Строка под баннером: CapyBooster v4.2.0   сборка ...   коммит ..."
-      placeholder: "CapyBooster v4.2.0   сборка 2026-08-25   коммит f7485e8"
+      description: "Строка под баннером: CapyBooster v5.6.4   сборка ...   коммит ..."
+      placeholder: "CapyBooster v5.6.4   сборка 2026-10-31   коммит 429fa73"
     validations:
       required: true
 
@@ -35,9 +35,9 @@ body:
       options:
         - "Мастер (START.cmd) / Wizard"
         - "Отдельный модуль / A single module"
-        - "Проверка системы (verify.ps1) / System check"
+        - "Проверка системы / System check"
         - "Отчёт / Report"
-        - "Обновление (Update-Pack.ps1) / Update"
+        - "Обновление / Update"
         - "Не знаю / Not sure"
     validations:
       required: true

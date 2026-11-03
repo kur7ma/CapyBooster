@@ -3,8 +3,7 @@
 [Русский](FAQ.ru.md) · [README](README.md) · [Changelog](CHANGELOG.md)
 
 Every question here came up for real: from a field report, a log someone sent,
-or a friend complaining that something got worse. Nothing is invented to fill a
-page.
+or a complaint that something got worse. Nothing is invented to fill a page.
 
 ---
 
@@ -13,8 +12,9 @@ page.
 ### Do I need to install anything first?
 
 No. Windows PowerShell 5.1 ships with Windows and is all this pack uses. There
-are no external modules, no Python, no .NET to install. Two optional tools
-(PresentMon for frame times, NVIDIA Profile Inspector for the GPU profile) are
+are no external modules, no Python, no .NET to install. Three optional tools
+(PresentMon for frame times, GoInterruptPolicy for binding interrupts and, on
+NVIDIA machines only, NVIDIA Profile Inspector for the GPU profile) are
 downloaded by a dedicated step that shows you what it fetches and from where,
 and asks first.
 
@@ -41,10 +41,11 @@ warns you before you accept it.
 
 ### How long does a run take?
 
-Roughly seven to twelve minutes, depending on how much your machine needs
-changing. Two steps are longer and optional: picking a core for GPU interrupts
-(about a quarter of an hour, screen blinking, no participation needed) and an
-in-game FPS measurement in CS2 (about five minutes).
+It depends on how much your machine needs changing and on which optional steps
+you accept. Most of the time you just wait. There is one reboot in the middle,
+and the wizard asks before it. The longest optional step is the search for the
+best core for GPU interrupts: the screen blinks while it runs, and it needs
+nothing from you.
 
 ---
 
@@ -62,7 +63,7 @@ saying otherwise would be a guess presented as a result.
 On a quiet machine most system tweaks do not move thread lateness at all. That
 is information: those tweaks are not what limits your frames.
 
-### Why did it skip the measurements entirely on my machine?
+### Why did it skip the measurements entirely?
 
 Calibration found that the instrument resolves nothing here. It walks the
 wake-up period down to the shortest one it supports, and if both P99 and the
@@ -70,8 +71,8 @@ P99.8 tail come back zero at every step, the machine is quieter than the
 measurement can see.
 
 Before this was added, such machines got twelve measurements per run, all
-returning zeros, and eleven verdicts of "indistinguishable". That cost about
-four and a half minutes out of an eleven-minute run and produced no information.
+returning zeros, and eleven verdicts of "indistinguishable": a long wait that
+produced no information.
 
 On such a machine, judge tweaks by measuring in the game itself.
 
@@ -96,15 +97,15 @@ is what the measurement itself varies by between runs.
 
 On its own it makes things worse, and it did.
 
-`ReservedCpuSets` can do exactly one thing: remove the fast cores from the pool
+Reserving cores can do exactly one thing: remove the fast cores from the pool
 Windows hands out by default. It cannot put your game there. Only the launch
 wrapper can, and it has to be used for every game, every launch, by hand.
 
 A game started the usual way gets the default pool, which is precisely the cores
 that were left to the system. On a hybrid Intel CPU that means all the E-cores,
-together with every background process. On one machine PUBG went from about 400
-FPS to about 300 with dips to 140, and Explorer opened folders noticeably
-slower.
+together with every background process. In testing on a hybrid Intel processor
+a game lost about a quarter of its frames, and Explorer opened folders
+noticeably slower.
 
 The step is still available, offered with an inverted default: Enter skips it,
 and it takes an explicit `y` after you read what it costs. If isolation is
@@ -147,8 +148,8 @@ pack script is running, and the Steam message says nothing about the pack.
 
 An old auto-continue task from an interrupted run. It is one-shot by design, but
 only the wizard removed it, so if you rebooted, never continued the run, and
-started fresh somewhere else, it stayed behind. Since v4.1.2 any run that is not
-a resume removes it at the start.
+started fresh somewhere else, it stayed behind. Now any run that is not a resume
+removes it at the start.
 
 ### Windows feels slower, and folders open with a delay
 
@@ -188,9 +189,10 @@ The report prints the exact command next to every applied module.
 
 ### How do I undo everything?
 
-`troubleshooting\Restore-Original.ps1` walks every module that has a backup and
-offers to restore it. The system restore point created at the start of the run
-is the fallback if something goes wrong beyond that.
+Double-click `UNDO.cmd` next to `START.cmd`. It returns the system to the state
+before the pack was first run. `START.cmd undo -Preview` shows the plan first
+without touching anything. The system restore point created at the start of the
+run is the fallback if something goes wrong beyond that.
 
 ### The report says a module is applied, but the registry disagrees
 
@@ -203,37 +205,39 @@ case with a command that brings the log back in line.
 
 ## Under the hood
 
-### What are the quality gates?
+### What is checked before a release?
 
-Eleven checks that run before a release can be built. A failure stops the build:
+Automatic checks that run before a release can be built. A failure stops the
+build. Among them:
 
 1. **Syntax.** Every script parses.
 2. **UTF-8 with BOM.** A script without it will not run correctly on a Russian
    Windows.
-3. **JSON.** Every data file parses.
-4. **PowerShell 5.1 only.** No `??`, `?.`, ternaries or PS7-only parameters,
-   checked with the tokenizer rather than by text search.
-5. **`impact.json` values.** `confidence` and `expected` must come from the
-   known set, or the report would silently show a blank.
+3. **Data files.** Every data file parses.
+4. **Windows PowerShell 5.1 only.** Nothing that needs a newer PowerShell gets
+   in, because Windows ships with 5.1.
+5. **Tweak cards.** Every card uses only known values, or the report would
+   silently show a blank.
 6. **Printed commands use full paths.** A relative path is useless in a console
-   that opened in `system32` after a reboot.
-7. **No dead Windows mechanisms.** `wmic`, `cscript`/`wscript`, `.vbs` files and
-   `Get-WmiObject` cannot come back into the pack.
-8. **`ru`/`en` dictionaries agree.** A missing key does not crash anything, it
-   quietly shows `<step.power.why>` in the middle of a sentence.
-9. **Game profile schema.** A typo in a profile field would leave a game without
-   its priority key, and the module would read it as "no priority wanted".
-10. **Core layout unit test.**
-11. **`$Error` is clean after the system check.** `-ErrorAction SilentlyContinue`
-    hides an error from the screen but still records it, and accumulated noise
-    buries the real problem in someone else's diagnostics.
+   that opened in the system folder after a reboot.
+7. **No dead Windows mechanisms.** `wmic`, VBScript and the old WMI commands
+   cannot come back into the pack.
+8. **Russian and English texts agree.** A missing line does not crash anything,
+   it quietly shows a placeholder in the middle of a sentence.
+9. **Game profiles.** A typo in a profile would leave a game without its
+   priority setting.
+10. **Core layout.** The split of cores between the game and the system is
+    tested on known processor layouts.
+11. **A clean system check.** The system check must finish without hidden
+    errors: accumulated noise buries the real problem in someone else's
+    diagnostics.
 
 ### Why is `wmic` mentioned everywhere if the pack does not use it?
 
-Microsoft removed `wmic.exe` from Windows 11 24H2. Half the tweaks in the earlier
-pack rested on it, so they stopped doing anything, without errors and
-without any sign, for years. The pack explains that wherever the old behaviour
-is relevant, and a quality gate makes sure it can never call `wmic` itself.
+Microsoft removed `wmic.exe` from Windows 11 24H2. Many popular tweaks and guides
+rested on it, so those tweaks stopped doing anything, without errors and without
+any sign. The pack explains that wherever the old behaviour is relevant, and a
+release check makes sure it can never call `wmic` itself.
 
 ### Why does the pack say what it deliberately does not do?
 
@@ -242,11 +246,19 @@ to be trusted rather than checked. The report has a section for refused
 techniques with a reason for each, see the table in the
 [README](README.md#popular-tweaks-get-refused-with-the-reason).
 
-### What data leaves my machine?
+### What data leaves the computer?
 
-None, unless you send it yourself. The pack downloads two tools and checks for
-its own updates; that is all the network traffic there is. The HTML report loads
+None, unless you send it yourself. The pack downloads up to three tools
+(PresentMon, GoInterruptPolicy and, on NVIDIA machines, NVIDIA Profile
+Inspector) and checks for its own updates; that is all the network traffic there
+is. The HTML report loads
 no external resources and opens offline.
 
 The diagnostics archive is created locally on your desktop, and you send it by
 hand if you want to. Your account name is masked out of it.
+
+---
+
+## Credits
+
+The pro player configs in the CS2 step are copied by hand from [prosettings.net](https://prosettings.net) when a release is prepared, and the pack itself never goes online for them; the core reservation approach and the idea of searching for the best core for GPU interrupts come from valleyofdoom's research ([PC-Tuning](https://github.com/valleyofdoom/PC-Tuning), [AutoGpuAffinity](https://github.com/valleyofdoom/AutoGpuAffinity)).

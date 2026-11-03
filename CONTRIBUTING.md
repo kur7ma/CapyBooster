@@ -12,9 +12,9 @@ proposal, and it says nothing about the person who made it.
 
 ## Before you open a pull request
 
-* `tools\Test-Pack.ps1` must pass all quality gates. It runs syntax checks,
-  encoding checks, PowerShell 5.1 compatibility, dictionary parity and more.
-  A failing gate blocks the release build.
+* Before a release is built, automatic checks run over the whole pack: syntax,
+  encoding, PowerShell 5.1 compatibility, dictionary parity and more. A failing
+  check blocks the release, so a change that breaks one cannot ship.
 * Scripts are **Windows PowerShell 5.1** only. No `??`, `?.`, ternaries,
   `-AsHashtable`, `ForEach-Object -Parallel`.
 * All `.ps1` and `.psm1` files are **UTF-8 with BOM**. Without the BOM they
@@ -54,9 +54,10 @@ updates from a two-month-old version.
 
 ### Перед тем как открыть pull request
 
-* `tools\Test-Pack.ps1` обязан проходить все ворота качества: синтаксис,
+* Перед сборкой релиза весь пак проходит автоматические проверки: синтаксис,
   кодировка, совместимость с PowerShell 5.1, согласованность словарей и
-  остальное. Провал ворот останавливает сборку релиза.
+  остальное. Провал проверки останавливает сборку, так что правка, которая её
+  ломает, в выпуск не попадёт.
 * Только **Windows PowerShell 5.1**. Никаких `??`, `?.`, тернарников,
   `-AsHashtable`, `ForEach-Object -Parallel`.
 * Все `.ps1` и `.psm1` — **UTF-8 с BOM**. Без BOM они ведут себя неверно на

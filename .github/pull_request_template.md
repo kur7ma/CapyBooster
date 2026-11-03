@@ -19,7 +19,7 @@ settings because "everyone recommends them".
 
 ## Проверено / Verified
 
-- [ ] `tools\Test-Pack.ps1` проходит все ворота / passes all quality gates
+- [ ] Скрипты разбираются, файлы JSON читаются / scripts parse, JSON files load
 - [ ] Скрипты в UTF-8 с BOM / scripts are UTF-8 with BOM
 - [ ] Только конструкции Windows PowerShell 5.1 (без `??`, `?.`, тернарников)
 - [ ] Если добавлены строки интерфейса — они есть в `lang\ru.json` **и** `lang\en.json`

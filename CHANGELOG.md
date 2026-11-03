@@ -8,6 +8,46 @@ heading. The updater shows those headings before it installs anything.
 
 ---
 
+## 5.6.5 - 3 November 2026
+
+**The CS2 settings step from a pro player's profile is gone.** The pack has not
+copied the crosshair since 5.6.3, and another player's sensitivity, viewmodel
+and HUD add no frames. The module stays in the pack and you can run it by hand.
+The system check still tells you if its settings are in the game.
+
+**The report names settings in plain words.** Instead of parameter names the
+report says what each setting does. In the English report some descriptions
+were still in Russian; now they are in English.
+
+**The wizard, report and help texts are simpler.** They no longer carry internal
+names, development history, comparisons with other programs or data from
+particular computers. What each step does has not changed.
+
+**The old tweak leftovers check has a new name.** It looks for what other
+optimizers left behind and offers to remove it. The check and the repair work
+as before.
+
+**Mistakes in descriptions fixed.** The pack sets Enhanced Sync and Chill on an AMD
+graphics card itself, while the description said it leaves them alone. The
+quick measurement runs three times for six seconds, not fifteen seconds. The
+English description of the multimedia scheduler got its missing item and the
+correct stock value.
+
+**No time promises.** The pack no longer says how many minutes a step or a run
+takes: there are no such measurements yet.
+
+**Advice when the synthetic measurement does not help.** If such a measurement
+cannot tell anything apart on your machine, the wizard suggests measuring FPS in
+your own game.
+
+**The archive holds only what the pack needs to run.** Checks that are needed
+only when a release is built are no longer in the archive.
+
+**The changelog is rewritten.** Each entry says what changed for you, without
+technical detail. The section about versions older than 4.3 is gone.
+
+---
+
 ## 5.6.4 - 31 October 2026
 
 **The power scheme installs again.** On Windows 10 the power scheme step failed
@@ -68,11 +108,11 @@ VBS on. The pack had turned nothing off in that case, it had only pinned what wa
 already off. Now red is left only for the situation where the pack itself turned
 off a running VBS, and everything else is a warning with an accurate hint.
 
-**The step that turns VBS off does not pin the off state when a game with that
-kind of anti-cheat is installed.** There is nothing to turn off, no gain, and the
-ban on turning it back on could get in the game's way if Windows one day enables
-VBS by itself. The step explains why and writes nothing. It also stopped writing
-values that are already set and rewriting the boot record when it is already right.
+**The VBS step no longer locks VBS off when a game with that kind of anti-cheat is installed.**
+There is nothing to turn off and nothing to gain, and a ban on turning VBS back
+on could get in the game's way if Windows one day enables it by itself. The step
+explains why and writes nothing. It also stopped re-saving settings that are
+already correct, the system startup settings included.
 
 **The Windows 11 tweaks skip what does not exist on Windows 10.** The old context
 menu and the widgets button exist only in Windows 11. On Windows 10 the pack wrote
@@ -86,7 +126,7 @@ the XMP profile in the BIOS, where there is usually no such option. It does warn
 about two memory modules of different sizes: then usually only part of the memory
 runs in dual-channel mode.
 
-**A typo was fixed** in the hint about the GameInput service.
+**A typo was fixed** in the hint about the game input service.
 
 ---
 
@@ -103,8 +143,8 @@ ordinary Anti-Lag is not turned on. The settings apply to the whole graphics car
 not to a single game. Texture filtering quality, surface format and FSR stay
 manual: AMD offers no way to write them.
 
-The write was tested on a stand-in driver, not on a live Radeon. So the first run
-is best done in preview mode: it shows the plan and changes nothing.
+This has not been tried on a real Radeon yet, so the first run is best done in
+preview mode: it shows the plan and changes nothing.
 
 **Two experiments: multiplane overlays (MPO) and memory compression.** People
 recommend turning both off, but the gain has never been measured, and for the
@@ -127,10 +167,10 @@ driver picks the chiplet for a game by a signal from Game Bar. Whether turning
 recording off affects that signal is not established, so this is a warning, not a
 refusal.
 
-**The CS2 settings snapshot sees more.** Brightness, contrast, player contrast
-boost and damage prediction live in a separate file that was never captured, so an
-edit in the game produced no line in the comparison. The "after" comparison mode
-itself crashed on every run - fixed.
+**CS2 setting changes are noticed more reliably.** Brightness, contrast, player
+contrast boost and damage prediction were never captured before, so changing
+them in the game did not show up in the before/after comparison. Fixed, and the
+"after" comparison no longer crashes on every run.
 
 **Descriptions are more precise.** What lies behind 8x anti-aliasing in the player
 profiles, why the frame cap in a profile and the general advice differ, what
@@ -141,12 +181,12 @@ the AMD description about a "second version" of Anti-Lag is corrected.
 
 ## 5.5.2 - 22 September 2026
 
-**Turning off virtualization-based security no longer slips past the
-anti-cheat.** When the machine has a game whose anti-cheat requires memory
-integrity to be on - Valorant today - the pack warned about it before the step.
-But in the no-questions mode that warning scrolled away together with the
-automatic yes, and people found out only after the reboot, when the game would
-not start. Exactly the case the warning was put there for.
+**Turning off virtualization-based security no longer slips past the anti-cheat.**
+When the machine has a game whose anti-cheat requires memory integrity to be on
+- Valorant today - the pack warned about it before the step. But in the
+no-questions mode that warning scrolled away together with the automatic yes,
+and people found out only after the reboot, when the game would not start.
+Exactly the case the warning was put there for.
 
 The question is now asked even in the no-questions mode: it can still be turned
 off, but only by hand and deliberately. The list of such games comes from their
@@ -241,9 +281,9 @@ launch wrapper and the resume-after-reboot task were reported as traces of some
 other tool, and the check offered to remove them. The cause was in how paths
 were compared, not in the traces themselves.
 
-**Restore now deletes values whose name contains square brackets.** Such names
-appear when the path to a game contains brackets. The deletion used to silently
-do nothing while the log and the counter reported success.
+**Undo now works for games in folders with square brackets in the name.**
+Before, the undo silently did nothing for them while the log and the counter
+reported success.
 
 **Restore stopped wiping other tools' interrupt settings.** The rule by which
 the pack recognises its own traces was too broad: the same entries are written
@@ -255,13 +295,12 @@ used to abort the whole save, leaving no copy anywhere although the system had
 already been changed. The two attempts are now independent. Reading backups also
 looks into the previous machine-wide store, not only the current one.
 
-**The wizard does not die on machines with restricted compilation.** Keeping the
-machine awake during a run could abort everything before the first tweak - on
-machines where security software or policy forbids compiling on the fly.
+**The wizard no longer stops on locked-down machines.** Where security software
+or policy blocks some system features, keeping the machine awake during a run
+could abort everything before the first tweak.
 
 **System utility output is read correctly.** On both Russian and non-Russian
-systems the text came back in the wrong encoding, which made some checks answer
-quietly wrong. Verified by measurement on the build machine.
+systems the text came back garbled, so some checks quietly answered wrong.
 
 ---
 
@@ -273,9 +312,9 @@ other tools were deleted instead of restored. The success message was printed
 either way, so there was no way to notice. A full restore now also removes the
 pack's power plan - it used to stay active.
 
-**The MMCSS module no longer stops on a foreign value.** If the setting was put
-there by another tweaker rather than by the pack, the module ended with an error
-before it even said what it would cost.
+**The multimedia priorities step no longer stops on a value set by another tool.**
+If the setting had been changed by another tweaker rather than by the pack, the
+step ended with an error before it even said what it would cost.
 
 **The report.** The headline accounts for regressions found. The document
 language follows the chosen one instead of always being Russian. The computer
@@ -301,39 +340,26 @@ but now shows it and suggests how to bring it back.
 
 ## 5.3.1 - 6 September 2026
 
-**A full restore now removes the pack's power plan.** The plan is found by name,
-and the pattern still carried the old name, "WinOpt". Module 04 has been naming
-it "CapyBooster - Gaming" since 4.3.0, so there were no matches at all and the
-plan never reached the restore list: people ran a full restore and kept the
-pack's active power plan forever, without a single message. Checked on the build
-machine: the old pattern finds zero plans, the new one finds exactly one.
+**A full restore now removes the pack's power plan.** The pack looked for its
+plan under an old name, so a full restore never found it, and the plan stayed
+active after the restore without a single message. It now finds the plan.
 
-**The MMCSS module no longer crashes on a foreign SystemResponsiveness value.**
-The parameter declares a set of allowed values, and PowerShell re-validates that
-set on every assignment to the variable, not only when arguments are parsed. The
-module read the value from the registry and assigned it back into that same
-parameter - if someone's registry held a value outside the set (1, 7 and
-0xFFFFFFFF turn up in third-party guides), the module died before it even
-printed what it would cost. The value read from the system now lives in a
-separate variable.
+**The multimedia priorities step no longer crashes on a value set by another tool.**
+If some guide had once put an unusual value into that setting, the step stopped
+with an error before it told you what it costs. It now reads the value and
+carries on.
 
-**The GPU interrupt core search takes the median, not the best run.** With an
-even number of passes the old line took the upper of two values. The default is
-two passes, so each core was judged by its best result, and a core with one good
-and one bad run beat a steady one.
+**The GPU interrupt core search judges each core by its typical result, not its best one.**
+By default each core is measured twice, and the search used to take the better
+of the two, so a core with one good and one bad run beat a steady one.
 
-**The leftover check no longer reports unreadable as fine.** `bcdedit` cannot
-open the BCD store without administrator rights, and its exit code was not
-checked: the timer names were not found in the refusal text, so the section
-answered "BCD timers are fine". The `-Check` mode, which the README suggests
-running from an ordinary console, gave a false green on any machine. It now says
-what happened: could not read, rights required.
+**The check for old tweaks no longer reports unreadable as fine.** Without
+administrator rights the check could not read the system startup settings, yet
+on any machine it answered that the timers were fine. It now says it could not
+read them and that administrator rights are needed.
 
-**The memory cleanup task runs under SYSTEM again.** Module 17 read an
-environment variable through a library function, while the library is imported
-twenty lines further down - in a fresh process that call failed. The
-`CapyBooster-PurgeStandby` task starts exactly that way: a new process with the
-library not yet loaded. The variable is now read directly, under both names.
+**The memory cleanup task works again.** When the task started on its own, it
+failed straight away. Fixed.
 
 ---
 
@@ -367,34 +393,32 @@ the layout now handles that: system and background go to the chiplet without
 cache, the game gets the cached chiplet in full, not a single core lost.
 Processors with equal cache on both chiplets get no layout: which one is better
 for the game has not been measured, and isolation would take half the game's
-cores. The branch is covered by a unit test; it has not been run on such a
-processor for real.
+cores. It has not been tried on a real processor of this kind yet.
 
-**On a dual-chiplet X3D the fork the pack used to carry as a contradiction is
-now named.** AMD has its own way to split the chiplets - Windows Game Mode
-together with the 3D V-Cache service. Our isolation and that do not work
-together: enabling one quietly cancels the other. The system check used to
-demand Game Mode while the isolation module effectively required it off. The
-advice now depends on what was chosen, and Game Mode with isolation applied is
-called a conflict. The module README has a table of what does not combine with
-what.
+**On a dual-chiplet X3D the pack now names the choice between two approaches.**
+AMD has its own way to split the chiplets - Windows Game Mode together with the
+3D V-Cache service. Our isolation and that do not work together: enabling one
+quietly cancels the other. The system check used to demand Game Mode while the
+isolation module effectively required it off. The advice now depends on what was
+chosen, and Game Mode with isolation applied is called a conflict. The module
+README has a table of what does not combine with what.
 
-**The system check tells a written assignment apart from actual execution.** It
-used to read back what it had written - which is intent, not result: an
-assignment onto a sleeping chiplet is accepted and reads back without a single
+**The system check tells where a game was told to run apart from where it actually runs.**
+It used to read back what it had written, which is intent, not result: Windows
+accepts a placement onto a sleeping chiplet and reads it back without a single
 error even though no thread runs there. The check now runs a short probe and
-looks at which cores it actually found itself on. It reports separately when a
-reservation is written but not yet in force - usually until a reboot.
+looks at which cores it actually landed on. It reports separately when a core
+reservation is written but not yet in force, usually until a reboot.
 
 **The pack sees processor parking.** The check warns when the cores handed to
 the system and background are asleep - background work will not move there - and
 reports when a whole chiplet is asleep.
 
-**A third-party owner of the assignment is stated as fact.** The mechanism the
-pack uses to place a game on chosen cores has no owner: whoever wrote last wins,
-and there are no notifications. The system check prints how many processes carry
-an assignment that is not the pack's, and which. The launch wrapper compares the
-game's assignment with its own every few seconds and logs it when something
+**The pack names other programs that move the game to other cores.** Any program
+can place a game on chosen cores, the pack included: whoever wrote last wins,
+and nobody gets notified. The system check prints how many processes have a
+placement that is not the pack's, and which ones. The launch wrapper compares
+the game's placement with its own every few seconds and logs it when something
 overwrites it.
 
 ---
@@ -417,107 +441,70 @@ update while the source was unreachable left a process hanging forever. Both the
 time to establish a connection and the time for the whole download are now
 bounded - a connection can be established and then deliver one byte per minute.
 
-**Arguments are no longer lost when administrator rights are requested.** This
-fixes the most important door in the pack. Double-clicking a shortcut is never
-elevated, and the elevated relaunch lost everything that had been passed to it:
-
-`UNDO.cmd` → undo → not admin → relaunch with no arguments → **the wizard ran
-instead of the rollback**.
-
-Someone whose machine got worse after a run pressed "undo", approved the Windows
-prompt, and got the optimizer applying tweaks again.
+**Undo no longer turns into a new run when Windows asks for administrator rights.**
+A double-clicked shortcut never starts with administrator rights, and the
+relaunch with rights lost everything passed to it. So someone whose machine got
+worse after a run started `UNDO.cmd`, approved the Windows prompt, and got the
+wizard applying tweaks again instead of the rollback.
 
 ---
 
 ## 5.1.0 - 31 August 2026
 
-**The pack's power plan no longer lowers the GPU power policy.**
+**The pack's power plan no longer lowers the graphics card's power policy.** The
+plan used to be a copy of the stock "Balanced" scheme and inherited its
+settings. Two of them belong to the graphics driver and are hidden from Control
+Panel, and both were set lower than in "High Performance". In games limited by
+the graphics card it could fail to reach full load while still drawing close to
+its full power. Games limited by the processor were not affected.
 
-The plan was created as a copy of the stock "Balanced" scheme. A copy inherits
-every parameter of its base, and the module only set a handful explicitly - the
-base decided the rest. Comparing all 32 parameters against "High Performance"
-produced exactly two disagreements, and both were graphics ones:
+The plan now starts from "High Performance", and both graphics settings are set
+explicitly, so they survive a change of base and a stock scheme edited by
+third-party "optimizers". The minimum processor state stays at 5% on top of
+that: "High Performance" pins it to 100%, which works against boost on Zen 5.
+The wizard offers the power plan step again to anyone who has already completed
+a run.
 
-- `AMD Power Slider -> Overlay` - 2 instead of 3;
-- `Switchable Dynamic Graphics -> Global Settings` - 2 instead of 3.
+**The system check now looks at the graphics card's power policy.** Any plan can
+lower it, and Control Panel does not show it. If the policy is below maximum,
+the check says so plainly and gives you the command to fix it. On machines
+without AMD graphics or switchable graphics the line does not appear.
 
-Both lines are registered by the graphics driver rather than by Windows, and
-they are not visible in Control Panel. The consequence: in GPU-bound games the
-card could fail to reach full load while still drawing close to its full power.
-In CPU-bound games it did not show up at all.
-
-The base is now "High Performance". The minimum processor state (5%, the single
-parameter the old base was chosen for) is set explicitly on top of it - "High
-Performance" pins it to 100%, which works against boost on Zen 5. Both graphics
-lines are written explicitly too: they survive a change of base and a stock
-scheme rewritten by third-party "optimizers". The "Power plan" step is bumped to
-version 2, so the wizard offers it again to anyone who has already completed a
-run.
-
-**The system check now looks at the GPU power policy.** Separately from the
-module: any plan can lower it, and those lines are not visible in Control Panel.
-If the policy is below maximum, the check says so plainly and hands over the
-command. Where the subgroups do not exist - no AMD graphics, no switchable
-adapters - the line is not shown at all.
-
-**On AC the machine no longer sleeps or blanks the screen.** These timeouts used
-to be inherited from the base; they are now set explicitly: a wizard run takes
-about forty minutes and the machine should not fall asleep in the middle of it.
-The cost is stated honestly: the screen will not blank on its own, so lock the
-machine if you leave it unattended. The battery profile is untouched.
+**On mains power the machine no longer sleeps or blanks the screen during a run.**
+These timeouts used to come from the base scheme; they are now set explicitly,
+because the machine should not fall asleep in the middle of a run. The screen
+will not blank on its own, so lock the machine if you leave it unattended.
+Battery settings are untouched.
 
 ---
 
 ## 5.0.2 - 27 August 2026
 
-**The wizard no longer starts twice at once.** It looked like this: after an
-update the CS2 settings question was asked twice, the report opened in the
-browser twice, and log lines came in pairs. The cause is a continuation of the
-same START.cmd story fixed in 5.0.1: the old launcher seeked back to its byte
-offset inside the new file, landed on the line that starts the wizard and
-started it a second time. Two wizards ended up in one console: they shared the
-keyboard (a keypress went to one or the other) and, worse, both wrote the same
-run state file.
-
-The wizard now takes a named machine-wide lock. A second instance waits twenty
-seconds - enough for the wizard's own handover during an update or elevation -
-and if the first one is still running, it says so plainly and exits. A wizard
-killed from Task Manager does not leave the lock stuck: the next launch picks
-it up and runs normally.
+**The wizard no longer starts twice at once.** After an update the CS2 settings
+question could be asked twice, the report opened in the browser twice, and log
+lines came in pairs: two copies of the wizard ran in one window, shared the
+keyboard and overwrote each other's progress. A second copy now waits twenty
+seconds and, if the first one is still running, says so and exits. A wizard
+closed from Task Manager does not block the next launch.
 
 **The summary line no longer contradicts itself.** It printed "steps completed:
-23 of 23" and directly below "NOT performed (skipped): 2 of 23". The completed
-list holds both executed and deliberately skipped steps - by design, otherwise
-a skipped step would be offered again on every run - but they must not count as
-completed. Skipped steps are now subtracted, and the skipped list itself
-survives leaving the wizard: before, it lived only in the run's memory.
+23 of 23" and right below "NOT performed (skipped): 2 of 23". Skipped steps no
+longer count as completed, and the list of skipped steps now survives closing
+the wizard.
 
-**Skip the report and the browser stays shut.** The "HTML report" step can be
-skipped, and the wizard used to open the newest report file in results anyway -
-showing last time's numbers, without today's changes. Only a report created in
-this run is opened.
+**Skip the report and the browser stays shut.** The wizard used to open the
+newest report anyway, showing the numbers from last time without today's
+changes. Now it opens only a report created in this run.
 
 ---
 
 ## 5.0.1 - 27 August 2026
 
-**Fixed a stray command after an update: a foreign line ran right after "the
-wizard is restarting".** It looked like `"the" is not recognized as an internal
-or external command`. The cause is how cmd.exe works: it does not read
-START.cmd into memory, it remembers a byte offset and re-reads the file from
-disk after every command. An update rewrites the pack in place, START.cmd
-included, so when the wizard exited cmd seeked back to its old offset inside a
-now-different file, landed in the middle of some other line and ran whatever it
-found there.
-
-The update itself was fine: the pack updated, the wizard relaunched, everything
-worked. Only the appearance broke — people read a baffling error at the exact
-moment everything had gone right.
-
-The wizard launch and the undo launch are now each a single line ending in
-`exit`: cmd parses the whole line before running it and then terminates without
-ever seeking back into the file. The trap had always been there; it only showed
-once START.cmd changed noticeably between versions.
+**Fixed a stray error after an update.** Right after "the wizard is restarting"
+a confusing message about an unknown command could appear. The update itself
+went fine: the pack updated, the wizard relaunched, everything worked. Only the
+message was wrong, and it showed up at the exact moment everything had gone
+right. The launch files are now arranged so this cannot happen again.
 
 ---
 
@@ -526,22 +513,21 @@ once START.cmd changed noticeably between versions.
 **Why a major number.** The pack is renamed on the inside, not just on the
 cover: the main script, the library and the run log all have new names.
 Everything that recognises traces of older versions on your machine is left
-where it was, and updating loses nothing — but this is the first release that
-changes file names, and calling it a new number is the honest thing to do.
+where it was, and updating loses nothing. This is the first release that changes
+file names, so it gets a new number.
 
 **A full undo is now one click away.** UNDO.cmd sits next to START.cmd and
 returns the system to the state before the pack was ever run. `START.cmd undo`
 does the same, and `START.cmd undo -Preview` shows the plan first without
 touching anything. This existed before but lived as a script in a subfolder,
 which put it out of reach of exactly the person who needs it: someone whose
-machine just got worse and who is not going to go reading documentation at
-that moment.
+machine just got worse and who is not going to go reading documentation at that
+moment.
 
-**What exactly was renamed.** The main script is capybooster. The main script and the run log were renamed to match the current pack name.log; the restore point, the scheduled task
-and the measurement window are renamed too. The old name stays where it
-recognises traces of older versions: task names, the machine-wide store, the
-marker in the CS2 config. WINOPT_ variables you set by hand keep working — the
-pack reads both names.
+**What else was renamed.** The restore point, the scheduled task and the
+measurement window carry the new name too. The old name stays only where the
+pack uses it to recognise traces of older versions. Settings you made by hand
+under the old name keep working: the pack reads both names.
 
 **Updating from an older version loses nothing.** The old main-script name is
 kept as a forwarder, so the "continue after reboot" task registered by the
@@ -549,58 +535,56 @@ previous version still finds something to run.
 
 **The GPU interrupt core search no longer runs on laptops.** The measurement
 there would be reading the wrong card: the load window does not choose a
-graphics card — Windows does, and on a laptop that is usually the integrated
-one, while the binding would land on the discrete card. On top of that the
-module restarts the display driver for every core it tries, and in a hybrid
-setup the card being restarted is not the one driving the picture. The system
-check now says so instead of offering to run the search.
+graphics card. Windows does, and on a laptop that is usually the integrated one,
+while the binding would land on the discrete card. On top of that the search
+restarts the display driver for every core it tries, and in a hybrid setup the
+card being restarted is not the one driving the picture. The system check now
+says so instead of offering to run the search.
 
 **The system check now looks at thread scheduling.** On a processor with two
 classes of cores, and on an X3D part with two chiplets, where the threads land
 matters more than every tweak in the pack put together. The pack now names the
 problem out loud: the cache preference service stopped, Game Mode off on a
-dual-chiplet X3D, Intel dynamic tuning stopped. It turns none of them on
-itself — it only says what is off and what that costs.
+dual-chiplet X3D, Intel dynamic tuning stopped. It turns none of them on itself:
+it only says what is off and what that costs.
 
 **A contradiction inside the pack's own report is resolved.** The pack said it
 does not switch Game Mode on blind, which is true. But a dual-chiplet X3D needs
 Game Mode: it is what parks the chiplet without cache. The refusal now carries
 that caveat, and on such a machine the check asks you to turn it on yourself.
 
-**A new laptop step: how power is split between the processor and the graphics
-card.** It writes nothing. Three independent controls divide the watts — NVIDIA
-Dynamic Boost, the vendor app's performance mode and the Windows power slider —
-and the pack can reach none of them: they live in the driver and in the laptop's
-own controller. The step explains where each one is, so you stop hunting for a
+**A new laptop step explains how power is split between the processor and the graphics card.**
+It writes nothing. Three independent controls divide the watts: NVIDIA Dynamic
+Boost, the vendor app's performance mode and the Windows power slider. The pack
+can reach none of them: they live in the driver and in the laptop's own
+controller. The step explains where each one is, so you stop hunting for a
 setting the system does not have.
 
 **Three places where the pack was not doing what it was written for.** The
-memory hygiene module returned the path to its own copy under the old store
-folder while actually working in the new one. In the same module the "task
-points into the store" detection never fired. And the full undo read the
-machine-wide snapshot from the old path, so it never found it, and fell back to
-an intermediate backup instead of the original state.
+memory hygiene step worked in one folder while reporting another, and did not
+recognise its own scheduled task. The full undo looked for the original system
+snapshot in the old place, never found it and fell back to an intermediate
+backup instead of the original state. All three are fixed.
 
 **The pack can tell a laptop from a desktop.** It could not before, at all. It
 tells them apart by chassis type rather than by the presence of a battery: a
 desktop on a UPS reports one too.
 
-**A measurement taken on battery is no longer compared with one taken on
-mains.** This is the important one. On battery the processor holds a different
-frequency ceiling, and such a pair is two different machines. The pack used to
-subtract one from the other in silence and produce a verdict that meant
-nothing. Now that pair comes back as "not comparable", through the same
-mechanism that already caught SMT being toggled between runs. Measurements
-taken before this version are judged as before: a missing power mark means
-"unknown", not "on mains".
+**A measurement on battery is no longer compared with one on mains.** This is
+the important one. On battery the processor holds a different frequency ceiling,
+and such a pair is two different machines. The pack used to subtract one from
+the other in silence and produce a verdict that meant nothing. Now that pair
+comes back as "not comparable", the same way the pack already handled SMT being
+toggled between runs. Measurements taken before this version are judged as
+before: a missing power mark means "unknown", not "on mains".
 
 **The wizard warns about running on battery** before the run starts, but does
 not stop it: people unplug mid-way too.
 
 **The power plan is honest about the battery now.** It always wrote its values
 for mains power only, so on battery the scheme changed nothing. Nobody said so,
-and people who ran the pack and then unplugged decided the tweaker did not
-work. On a laptop this is stated plainly now.
+and people who ran the pack and then unplugged decided the tweaker did not work.
+On a laptop this is stated plainly now.
 
 **The system check no longer shows green on battery.** The scheme is active but
 inert, and it says exactly that.
@@ -616,76 +600,67 @@ presets, but they idle on a desktop, and that is where the habit of switching
 them off "as useless" comes from. On a laptop they drive auto-brightness and
 auto-rotation.
 
-**Turning off mouse acceleration on a laptop affects the touchpad too** — that
-is now written in the step's cost. Windows has one acceleration setting for
-every pointing device; it cannot be turned off for the mouse alone.
+**Turning off mouse acceleration on a laptop affects the touchpad too.** That is
+now written in the step's cost. Windows has one acceleration setting for every
+pointing device; it cannot be turned off for the mouse alone.
 
-**Fixed an undo bug that could delete a setting the pack never made.** Registry
-values named after a full file path were read with wildcard matching: a path
-like "D:\Games\[RUS] Shooter\game.exe" was not found, the backup recorded
-"there was no value", and the undo deleted a setting that existed before the
-pack ran.
+**Fixed an undo bug that could delete a setting the pack never made.** For games
+in folders with square brackets in the path, such as "D:\Games\[RUS] Shooter",
+the pack mistook "not found" for "there was nothing before", and the undo
+removed a setting that existed before the pack ran.
 
-**The power check can no longer bring the wizard down.** On a machine where
-Windows will not let the helper code compile — corporate policy, a blocked
-compiler, an unavailable temp folder — the pre-flight died outright, and on the
-battery check of all things, which nobody asked for. Such a machine now simply
-says "could not be determined" and moves on.
+**The power check can no longer bring the wizard down.** Where Windows will not
+let the pack run its helper code (a corporate policy, for example), the
+pre-flight check died outright, and on the battery check of all things. Such a
+machine now says "could not be determined" and moves on.
 
 **The pre-flight no longer prints a green "on mains" when it could not tell.**
 There are three states, not two, and the third one now has its own name.
 
 **The right reason is printed under "cannot be compared".** It used to always
-say "this is a difference between two topologies" — under a pair that differed
-by power source, people read two mutually exclusive reasons in a row.
+say "this is a difference between two topologies": under a pair that differed by
+power source, people read two mutually exclusive reasons in a row.
 
 **Diagnostics no longer pass "not determined" off as "no battery, on mains".**
 Whoever reads someone else's archive was reading that as fact.
 
-**The power module no longer leaves one hidden parameter exposed** after an
-undo on hybrid processors.
+**The power module no longer leaves one hidden parameter exposed** after an undo
+on hybrid processors.
 
-**Fixed a drift between code and documentation.** Since version 3.9 the power
-module forbids parking for both classes of cores, while the description and
-both cards still promised the slow class was allowed to park.
+**Description and behaviour now agree.** The power module forbids parking for
+both classes of cores, while the description and both cards still promised the
+slow class was allowed to park. Fixed.
 
----
+**CS2 settings from a pro player's profile.** The CS2 step is rewritten and
+switched back on. You pick a player from the list (ZywOo, donk, m0NESY, s1mple,
+NiKo), and their sensitivity, viewmodel, crosshair, HUD and resolution are
+transferred onto your machine. The sensitivity is recalculated for your own
+mouse DPI: the same number at a different DPI would move the crosshair at a
+different speed, and "settings like ZywOo's" would be a lie. Anything you wrote
+in autoexec yourself stays where it is. This moves preferences rather than
+optimising anything, and the step says so plainly: a player's profile buys no
+frames.
 
-**CS2 settings from a pro player's profile.** Module 15 has been rewritten and
-switched back on. You pick a player from the list — ZywOo, donk, m0NESY, s1mple,
-NiKo — and their sensitivity, viewmodel, crosshair, HUD and resolution are
-transferred onto your machine. The sensitivity is recalculated for your own DPI
-through eDPI: the same number at a different DPI would move the crosshair at a
-different speed, and "settings like ZywOo's" would be a lie. The settings go in
-as a block between markers, so anything you wrote in autoexec yourself stays
-where it is. This moves preferences rather than optimising anything, and the
-module says so plainly: a player's profile buys no frames.
+**The CS2 step no longer touches Steam's settings.** That is what got it
+switched off: it edited the game's launch options and added its own launcher to
+every game start. That launcher existed for core isolation, which the pack has
+since turned off by default because it cost frames. Launch options are now only
+printed for you to paste yourself.
 
-**Module 15 no longer writes into Steam's config.** That is what got it switched
-off: it edited CS2's launch options in localconfig.vdf and injected a game.cmd
-wrapper there, which ran a cmd script on every game launch. The wrapper existed
-for core isolation, which the pack has since turned off by default because it
-cost frames. Launch options are now only printed for you to paste yourself.
+**Only settings that exist in the current game are written.** That is how it
+turned out that CS2 has no weapon bob setting at all, even though "Bob" sits in
+the settings tables on every site. It cannot be transferred, and the pack does
+not pretend it was. Quality levels come from the game's own presets, so shadows,
+textures, shaders, particles, anti-aliasing and Reflex are set by the step
+itself. HDR and brightness stay manual.
 
-**Convars are checked against the game's binaries.** Only what actually exists in
-the current build goes into the block. That is how it turned out that CS2 has no
-bob convar at all — not cl_bobcycle, not cl_usenewbob, none of them — even
-though "Bob" sits in the settings tables on every site. It cannot be
-transferred, and the pack does not pretend it was. The quality level scale was taken from the
-video_defaults presets inside the game's own files, so shadows, textures,
-shaders, particles, anti-aliasing and Reflex are written by the module itself.
-HDR and brightness stay manual, for reasons recorded in the key map.
-
----
-
-**New module: Control Flow Guard for a DirectX 12 game.** Windows checks every
-indirect call inside a process, and the DX12 runtime and graphics drivers make a
-great many of them. Turning the check off for one game removes a share of the
-micro-stutters, though not for everyone, and the module says so plainly. The
-step only appears when a game with a DX12 mode is found; your own can be named
-explicitly. The bit positions were taken by measurement on a live system rather
-than from guides: the value matches byte for byte what Windows itself writes,
-and other protection settings on the same file survive.
+**New step: Control Flow Guard for a DirectX 12 game.** Windows checks every
+indirect call inside a game, and DirectX 12 and graphics drivers make a great
+many of them. Turning the check off for one game removes some of the
+micro-stutters, though not for everyone, and the step says so plainly. It
+appears only when a game with a DirectX 12 mode is found; you can name your own.
+The values were checked on a live system, and other protection settings for the
+same game survive.
 
 **The report opens last, not before the archive question.** The browser used to
 jump in front of the console at the exact moment the pack asked whether to
@@ -698,30 +673,30 @@ now, browser after.
 ## 4.4.8 - 26 August 2026
 
 **The system check now names your memory speed.** The pack collected the number
-into its hardware snapshot and said nothing about it. A submitted run on a Ryzen
-7 5700X3D had memory at 2666 MHz, the SPD base speed, with no XMP profile. On a
-CPU with a large cache that costs more than everything the pack does put
-together. The check now shows the speed every time, and warns when the profile
-looks disabled. The pack cannot change it: that is a BIOS setting, and it says
-so.
+and said nothing about it. In a run a player sent in, memory ran at 2666 MHz,
+the base speed, with no XMP profile enabled. On a processor with a large cache
+that costs more than everything the pack does put together. The check now shows
+the speed every time and warns when the profile looks disabled. The pack cannot
+change it: that is a BIOS setting, and it says so.
 
-**The BCD timer message is more precise.** The note about useplatformtick and
-disabledynamictick ended with "harmful on Zen 5", which a Zen 3 owner read as
-"not about me". The mechanism applies to current CPUs generally, and Zen 5 is
-where it was confirmed by measurement. The message now says exactly that.
+**The note about the two timer settings is more precise.** It ended with
+"harmful on Zen 5", which people with older Ryzen processors read as "not about
+me". The mechanism applies to current processors in general, and Zen 5 is where
+it was confirmed by measurement. The note now says exactly that.
 
 ---
 
 ## 4.4.7 - 26 August 2026
 
-**The AMD walkthrough no longer shows up for NVIDIA owners.** Every desktop Ryzen
-has integrated graphics, which Windows reports as "AMD Radeon(TM) Graphics". The
-check looked for the word Radeon in the list and found it on every Ryzen,
-including machines that game on a GeForce. From a submitted run: a 9800X3D with
-an RTX 5070 Ti got twenty lines about Adrenalin. The module now asks not "is
-there a Radeon" but "do you game on the Radeon": if a discrete card from another
-vendor sits next to it, that is what you play on. A build with only integrated
-graphics still counts as gaming on Radeon, where the settings fully apply.
+**The AMD walkthrough no longer shows up for NVIDIA owners.** Every desktop
+Ryzen has integrated graphics, which Windows reports as "AMD Radeon(TM)
+Graphics". The check looked for the word Radeon in the list and found it on
+every Ryzen, including machines that game on a GeForce. In one submitted run a
+machine with a GeForce card got twenty lines about Adrenalin. The module now
+asks not "is there a Radeon" but "do you game on the Radeon": if a discrete card
+from another vendor sits next to it, that is what you play on. A build with only
+integrated graphics still counts as gaming on Radeon, where the settings fully
+apply.
 
 **The module stops when Adrenalin is not installed.** In the same run it said
 "AMD Software was not found on this machine" and then printed every setting you
@@ -756,25 +731,24 @@ up once the decision was made. A short cost line now comes before the menu. The
 detailed block inside the module stays where it was: it prints before anything
 is written and before the module's own second question.
 
-**Every module card gained a cost field.** Twenty-four cards, one sentence each.
-A quality gate refuses to build a release if a new module lacks the field:
-without it the wizard says nothing, and people agree without knowing the price.
+**Every module card gained a cost line.** Twenty-four cards, one sentence each.
+A release can no longer be built if a new step lacks it: without it the wizard
+says nothing, and people agree without knowing the price.
 
 ---
 
 ## 4.4.4 - 26 August 2026
 
-**The diagnostics archive is anonymised.** An audit of a real collected archive
+**The diagnostics archive is anonymised.** A check of a real collected archive
 found things that should not have been in it. The computer name sat in ten
 places and in the file name itself, so seeing it took no opening at all. The log
-held `steam\userdata\<number>` paths, which are Steam account numbers that lead
-straight to a profile; this machine had three. All of that is masked now, along
-with the organisation domain name.
+held paths with Steam account numbers, which lead straight to a profile. All of
+that is masked now, along with the organisation domain name.
 
-**The anonymising tool wrote the name into the log itself.** It printed "the
-name Ivan matches a service word", and the log goes into the next archive. It
-now prints only a count, and old lines of that shape are scrubbed during
-collection.
+**The anonymising tool wrote the account name into the log itself.** It printed
+a line naming the account whenever the name matched an ordinary word, and the
+log goes into the next archive. It now prints only a count, and old lines of
+that kind are scrubbed during collection.
 
 **The archive name no longer carries the computer name.** The file is called
 `capybooster-diag-<date>-<time>.zip`, and the timestamp is what tells archives
@@ -798,21 +772,15 @@ network. It still loads zero external resources.
 ## 4.4.2 - 26 August 2026
 
 **Fixed a crash on the first run.** The wizard asks for a language at the very
-start, while the function that reads the answer was declared six hundred lines
-below. PowerShell creates a function only once execution reaches its
-declaration, so the first run stopped with "Read-MenuChoice is not recognized".
-It hit everyone starting the pack for the first time, and only them: anyone who
-had already chosen a language never sees the question, so the path never ran.
-The menu-reading functions moved into the library, where line order does not
-matter.
+start, and on the first launch it stopped with an error about an unknown
+command. It hit everyone starting the pack for the first time, and only them:
+anyone who had already chosen a language never sees the question.
 
-**A quality gate now catches this class of bug.** The twelfth check parses every
-script and fails if a function is called above its own declaration at the top
-level of a file.
+**Release checks now catch this kind of bug.** A release that has it will not
+build.
 
-**The project name in the launcher window.** START.cmd printed the previous
-technical name in the window title and the banner. A capybara moved in there
-too.
+**The project name in the launcher window.** The window title and the banner
+still showed the previous technical name. A capybara moved in there too.
 
 **Cleanup of files under previous names moved into the wizard.** It used to live
 in the updater, but an update is performed by the version already installed:
@@ -825,10 +793,9 @@ cleanup. The wizard now does it on every start.
 
 **The archive carries the project name.** On the release page it is now
 `CapyBooster-latest.zip`, and the folder inside is `CapyBooster-v4.4.1`. The old
-name `win-optimization-latest.zip` stays on the source and will stay for a long
-time: the archive name is hard-coded in the updater, and whoever updates once
-every couple of months has the old one written in. Removing it now would break
-updates for exactly the people who update least often.
+archive name stays available for a long time: older copies of the pack ask for
+it when they update, and removing it would break updates for exactly the people
+who update least often.
 
 **Files under previous names are cleaned up on update.** An update still deletes
 nothing on its own, but the three files we renamed are now removed from an
@@ -839,30 +806,29 @@ not know which one is live.
 
 ## 4.4.0 - 26 August 2026
 
-**Profiles for popular games.** A `games` folder now holds profiles for
-Counter-Strike 2, Valorant, Apex Legends and Delta Force. The pack finds what is
-installed, reads the real executable name off disk, and sets high priority only
-for that name. A key written under a guessed name would look applied and do
-nothing. The report gained a section for the games it found: what to change
-inside the game, what to close before playing, which launch options are useless.
+**Profiles for popular games.** The pack now has profiles for Counter-Strike 2,
+Valorant, Apex Legends and Delta Force. It finds what is installed, reads the
+real executable name off disk, and sets high priority only for that name: a
+setting written under a guessed name would look applied and do nothing. The
+report gained a section for the games it found: what to change inside the game,
+what to close before playing, which launch options are useless.
 
 **A warning about the anti-cheat conflict.** Vanguard's on-demand mode needs
 memory integrity. If Valorant is installed, the VBS/HVCI step says so before you
 turn it off, and the system check reports the conflict if you already did.
 Before this, people found out after a reboot, from a game that would not start.
 
-**A background recording module.** It turns off Xbox Game Bar recording: three
-registry values, because one is not enough. This is the only step in the pack
-that asks even in no-questions mode, because many people keep instant replay on
-purpose, and switching it off silently takes away something they use. NVIDIA,
-AMD and Intel keep replay in their own apps, so the pack shows those along with
-the path to the setting instead of writing to them.
+**A background recording module.** It turns off Xbox Game Bar recording
+completely. This is the only step in the pack that asks even in no-questions
+mode, because many people keep instant replay on purpose, and switching it off
+silently takes away something they use. NVIDIA, AMD and Intel keep replay in
+their own apps, so the pack shows those along with the path to the setting
+instead of changing them.
 
 **A walkthrough for AMD graphics.** Radeon owners got nothing from the pack on
-the graphics side, because module 13 works only with NVIDIA. A new module walks
-through the Adrenalin settings for competitive play. It writes nothing and
-cannot: no tool edits Radeon profiles from the command line, and ADLX is a
-library for developers.
+the graphics side, because the graphics step worked only with NVIDIA. A new step
+walks through the Adrenalin settings for competitive play. It writes nothing: at
+the time the pack had no way to change Radeon settings.
 
 **Two checks before a run.** A pending reboot means system servicing has not
 finished, so the measurement will land on "indistinguishable" because of the
@@ -870,29 +836,29 @@ installer working in the background. Central management means group policy will
 overwrite some values after us. Both checks warn you and name the affected
 modules; neither blocks the run.
 
-**Technical identifiers renamed.** Scheduled tasks, the ProgramData folder and
-the power plan now carry the CapyBooster name. The pack recognises the previous
-names too, so skipping this release changes nothing for you. The move is a
-separate confirmed step that appears only if you have something to move: files
-are copied and checked first, and the old copy goes after the check passes.
+**Names changed to CapyBooster.** Scheduled tasks, the data folder and the power
+plan now carry the CapyBooster name. The pack still recognises the old names, so
+skipping this release changes nothing for you. Moving old files is a separate
+confirmed step that appears only if you have something to move: files are copied
+and checked first, and the old copy is removed after the check passes.
 
 **The stale-path check does its job now.** It was written in the previous
 release but, through an oversight, executed only when the backup migration
 failed, which is to say almost never. It runs on every start.
 
-**The task repair command is correct now.** Any orphaned task got the module 02
-command. Whoever owned the memory-cleanup task was told to run an unrelated
-script that does not touch it.
+**The task repair command is correct now.** Every orphaned task got the same
+command, so the memory-cleanup task came with advice to run an unrelated script
+that does not touch it.
 
-**The change list shows up before an update again.** The changelog was requested
-under a Cyrillic file name, and GitHub renames release assets with those. People
-saw "an update is available" and not one line about what was in it.
+**The change list shows up before an update again.** The updater could not fetch
+it, so people saw "an update is available" and not one line about what was in
+it.
 
 **The refusal list grew.** The "what the pack deliberately does not do" section
-now holds 20 entries: removing system AppX packages, `dism /ResetBase`, bulk
-registry permission changes, turning off Volume Shadow Copy, TCP parameters such
-as Nagle, visual effects, turning on HAGS, and disabling fullscreen
-optimizations.
+now also covers removing built-in apps, irreversible cleanup of Windows update
+leftovers, bulk permission changes, turning off shadow copies, network tweaks
+such as Nagle, visual effects, forcing hardware GPU scheduling on, and disabling
+fullscreen optimizations.
 
 ---
 
@@ -906,31 +872,10 @@ version, so updating later still lands you in the right place.
 security policy, an MIT license, and a Results category in Discussions for other
 people's measurements.
 
-**Two more services on the never-touch list.** VSS and swprv joined the hard
-allowlist: the restore point the pack creates before a run stands on Volume
-Shadow Copy.
+**Two more services on the never-touch list.** The shadow copy services joined
+it: the restore point the pack creates before a run depends on them.
 
 **Version numbers removed from names.** The power plan, the memory-cleanup task
-description and the autoexec.cfg header no longer carry a version number, which
-went stale at the first update. The current number is printed in the banner and
-in the report.
-
----
-
-## Earlier
-
-Versions before 4.3.0 shipped from a different repository. What survived and
-shaped the current defaults:
-
-**Core isolation is off by default.** Reserving cores only removes them from the
-pool Windows hands out; it cannot put your game there. On one machine PUBG
-dropped from roughly 400 FPS to roughly 300.
-
-**The measurement gained a noise floor.** On a very quiet machine the spread came
-out at exactly zero, and 0.3 microseconds was declared a regression. There is a
-floor of one microsecond now, and three runs instead of two.
-
-**English translation.** The wizard, the system check, the report and every
-tweak card.
-
-**Quality gates.** Eleven mechanical checks that stop a release build.
+description and the header in the CS2 config no longer carry a version number,
+which went stale at the first update. The current number is printed in the
+banner and in the report.
