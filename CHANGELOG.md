@@ -8,6 +8,25 @@ heading. The updater shows those headings before it installs anything.
 
 ---
 
+## 5.6.6 - 4 November 2026
+
+**The measurement after the reboot measures the interrupt layout.** Core
+isolation is off by default, and then the "Quick measurement after the reboot"
+step was skipped entirely, even though the interrupt layout had already taken
+effect. Now without isolation the step measures the interrupt layout across all
+cores, and if neither was applied it says so.
+
+**The countdown before the reboot is visible.** The lines "Rebooting in 10
+seconds" and "The wizard continues on its own after you sign in" never reached
+the screen: the console waited ten seconds in silence and restarted the
+computer. Now both lines show.
+
+**The anti-cheat note follows the run language.** In an English run, the VBS
+step's warning about a game's anti-cheat (Valorant, for example) printed in
+Russian. Now it is in English.
+
+---
+
 ## 5.6.5 - 3 November 2026
 
 **The CS2 settings step from a pro player's profile is gone.** The pack has not

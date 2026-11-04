@@ -98,7 +98,7 @@ Check the archive before you run it:
    For 5.6.5, none of the 65 engines found anything:
    [scan report](https://www.virustotal.com/gui/file/4560ed11b192e5c9a6de30d498cfe0b5b003cd64c06144c7a9d24bac3bc0c38f).
 
-The 5.6.5 archive holds 189 files, all of them text: PowerShell scripts,
+The 5.6.6 archive holds 189 files, all of them text: PowerShell scripts,
 settings in JSON, NVIDIA profiles and documentation. You will find no .exe or
 .dll in it. Two small helpers, a game launcher and a timing benchmark, come as
 C# source in the same archive, and the pack builds them on your PC when a step
