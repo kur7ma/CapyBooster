@@ -8,6 +8,61 @@ heading. The updater shows those headings before it installs anything.
 
 ---
 
+## 5.7.2 - 14 November 2026
+
+**The background CPU reserve is now reduced on an untouched Windows too.** In
+5.7.0 the multimedia priorities step kept the factory value when it was
+already written - and on an untouched Windows it almost always is. The step
+changed nothing, while "What it costs" promised a smaller reserve. The factory
+value is now replaced, and the cost describes what the step actually writes.
+A value you set yourself is still left alone. If you already ran this step,
+the wizard offers it again.
+
+**"Everything unattended" no longer skips anything silently.** Everything
+safe is still done by itself. What needs your decision used to be simply
+skipped in that mode, with nobody to offer it: turning VBS off, core isolation,
+the game session, the lowest priority for system processes, grouping services
+into shared processes, turning off CPU protections and Hyper-V. Each such item
+is now asked, with what it does and what it costs; Enter means no.
+
+**A full restore reminds you about Hyper-V.** If the pack turned the Hyper-V
+components off, a full restore now says that only the protections step's own
+revert turns them back on, and prints the command.
+
+**A game no longer starts through two wrappers at once.** If the pack was
+unpacked into a new folder and the game's Steam launch options ended up with two
+wrappers - the new one and the old one - the game went through both: two
+windows, and the second wrapper assigned cores to a process that had already
+exited. The extra wrapper is now skipped, the game starts once, and the window
+says which entry to remove from the launch options.
+
+**Core isolation left by a previous install no longer goes unnoticed.** If a
+previous pack folder turned isolation on, the isolation step now says so before
+asking: skipping the step does not turn isolation off, and games without the
+wrapper would keep running on the slow cores. The revert command is shown.
+
+**The extra system values step no longer crashes on a re-run.** If you had
+chosen to group services into shared processes, every later run of the step
+stopped with an error before doing anything.
+
+**Reverting the protections step turns Hyper-V back on from a new folder too.**
+If the pack was unpacked into a new folder, the revert restored the settings but
+said it had not turned Hyper-V off, and left it off.
+
+**Fewer false "the XMP memory profile is off".** The check treated the profile
+as off whenever the memory speed was not above the rated one - and many boards
+report the profile speed as the rated one once the profile is on. With equal
+numbers the warning now stays only for standard speeds that also exist without
+a profile (such as 3200 or 4800); a speed like 5400 means the profile or an
+overclock is working.
+
+**The false "the task points to another pack folder" is gone.** The memory
+cleanup and game session tasks now live in a protected system folder, the
+check did not know that and showed them as foreign. The fix it suggested
+changed nothing.
+
+---
+
 ## 5.7.1 - 14 November 2026
 
 **Everything needed is in the archive, no internet required.** The frame-time
