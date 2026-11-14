@@ -8,6 +8,27 @@ heading. The updater shows those headings before it installs anything.
 
 ---
 
+## 5.7.3 - 14 November 2026
+
+**The hint for a dead wrapper in Steam now works.** If a game's launch options
+still hold a wrapper from a deleted pack folder, the game does not start at all
+and Windows says it cannot find game.cmd. The pack noticed this but suggested a
+command that changed nothing. The command now removes the stale wrapper and keeps
+your own launch options.
+
+**The lsass priority is visible on new Windows 11 builds too.** There the process
+is protected, and the check showed "?" with the verdict "not Idle". The priority
+is now read another way, and if it cannot be read at all, the check says so.
+
+**An AMD driver refusal comes with where to set it by hand.** On some Radeon cards
+the driver does not allow writing "Wait for Vertical Refresh". Instead of the word
+"error" the step now shows the path in AMD Software to set it manually.
+
+**The log shows which process got the priority.** The extra values step used to
+print several identical lines without the process name.
+
+---
+
 ## 5.7.2 - 14 November 2026
 
 **The background CPU reserve is now reduced on an untouched Windows too.** In
