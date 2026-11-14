@@ -8,6 +8,84 @@ heading. The updater shows those headings before it installs anything.
 
 ---
 
+## 5.7.0 - 14 November 2026
+
+**A window instead of the console, if you like.** At launch CapyBooster asks
+how you want to work: in the console as before, or in a window. The window
+shows what computer this is, what is already set up and what each step gave by
+measurement. Steps are cards there, each can be applied or reverted on its own;
+the "Optimize" button runs the recommended set. The console is unchanged: it is
+the expert mode and the reference for measurements. Open the window directly
+with `START.cmd ui`, the console with `START.cmd console`.
+
+**The window stays out of the measurements.** During every measurement the
+window hides and goes to sleep. What it costs on your computer is shown by the
+`START.cmd uicost` measurement (about 6-7 minutes). Until that is done, the
+launch question says so: "its cost has not been measured yet".
+
+**Turning VBS/HVCI off happens only by your decision.** It trades protection
+for speed. Before, "everything unattended" applied it by itself unless it found
+a game with an anti-cheat. Now that mode skips the step and prints the command,
+and step by step it is turned on only by an explicit "y".
+
+**The background CPU reserve is now actually reduced.** The multimedia
+priorities step wrote a value that Windows, per its own documentation, treats as
+the factory one, so it changed nothing. It now writes the smallest value Windows
+honours. If you once set "zero" from a guide, the step shows that it never
+worked and fixes it. If you already ran this step, the wizard offers it again.
+
+**New step: extra system values.** The kernel is not paged out, heavy shader
+compilation no longer ends in a graphics driver reset after two seconds, and
+Windows stops slowing down programs that crash often. As separate questions, and
+step by step only: the lowest priority for background system processes and
+grouping services back into shared processes. The latter adds no frames, and
+the step says so plainly.
+
+**New step: turning off Defender antivirus.** Only on your answer, even in
+"everything unattended". It is turned off so that one command brings it back.
+Tamper Protection has to be turned off by hand first - the step shows where.
+
+**New step: turning off protections for frames.** CPU side-channel protections,
+system-wide program protections and the virtualization components - each as a
+separate question, nothing applied unattended. The step says plainly where
+there is a real mechanism for more frames and where there is not, and that
+FACEIT and Valorant may refuse to start with protections off.
+
+**After a reboot the mode is not asked again.** If you chose "everything
+unattended", the run continues the same way after the reboot, without the menu.
+
+**Game session: background extras paused while a game runs.** A new wizard
+step. For games started through the `game.cmd` wrapper you can choose to stop
+Windows Search and a short list of background services (printing,
+maintenance, diagnostics, update delivery), raise the game's priority on the
+graphics card and on the disk, pause Steam together with its built-in browser,
+and hold a 0.5 ms timer. When the game closes everything comes back. Each item
+is asked separately with what it gives and what it costs; Enter means no. The
+automatic run skips the step.
+
+**Steam and services come back even if the game crashed together with the
+wrapper.** Services come back on their own as soon as no game is left. Steam
+comes back on the next game start, or by hand with the recovery command the
+step prints.
+
+**The timer can now be turned on for the length of a game.** Before, the pack
+refused a forced timer altogether. There is still no permanent timer program:
+the request lives exactly as long as the game. The cost is named in the
+question: a reboot is needed, and outside a game any program can change the
+timer again.
+
+**A full restore removes the game session choice too.** Otherwise after a
+restore the wrapper would keep pausing Steam.
+
+**Pre-game memory cleanup no longer opens a way into the system.** The task
+that cleans memory with system rights took part of its code from the pack
+folder, which any user of the computer can write to. It now runs a separate
+copy from a protected system folder that only administrators can change. If
+you already have the task, run the memory cleanup step again and it moves over
+by itself.
+
+---
+
 ## 5.6.6 - 4 November 2026
 
 **The measurement after the reboot measures the interrupt layout.** Core
