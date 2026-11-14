@@ -8,6 +8,15 @@ heading. The updater shows those headings before it installs anything.
 
 ---
 
+## 5.7.5 - 14 November 2026
+
+**The check no longer suggests the AMD settings where games do not run on a
+Radeon.** On machines with an NVIDIA card and on laptops with integrated Radeon
+graphics the system check offered the Radeon settings command, although the
+wizard rightly does not offer that step there. It now says "not needed".
+
+---
+
 ## 5.7.4 - 14 November 2026
 
 **A dead wrapper in Steam is now visible - and removed with one key.** If a
