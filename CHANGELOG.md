@@ -8,6 +8,15 @@ heading. The updater shows those headings before it installs anything.
 
 ---
 
+## 5.7.6 - 14 November 2026
+
+**The dead Steam wrapper question now reaches those who pick the GUI.** It sat
+after the "GUI or console" choice, and with the GUI picked the console closes
+before that point, so the question never showed. It is now asked in the console
+before that choice, once per launch, and no longer pops up on every GUI card.
+
+---
+
 ## 5.7.5 - 14 November 2026
 
 **The check no longer suggests the AMD settings where games do not run on a
