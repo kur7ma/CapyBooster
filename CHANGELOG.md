@@ -8,6 +8,23 @@ heading. The updater shows those headings before it installs anything.
 
 ---
 
+## 5.7.1 - 14 November 2026
+
+**Everything needed is in the archive, no internet required.** The frame-time
+meter and the other tools now ship inside the archive, at the versions the pack
+checked. Before, the wizard downloaded them from GitHub, and where GitHub does
+not open the "Tools" step failed - and without the meter the pack could not
+prove anything by measurement.
+
+**Memory has its own tile.** In the GUI the amount of RAM was printed under the
+graphics card and read as video memory. It is now a separate "Memory (RAM)"
+tile.
+
+**At launch: "1 - GUI, 2 - Console (expert)".** The choice is now a digit; Enter
+still opens the console.
+
+---
+
 ## 5.7.0 - 14 November 2026
 
 **A window instead of the console, if you like.** At launch CapyBooster asks
