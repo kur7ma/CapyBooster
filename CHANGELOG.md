@@ -8,6 +8,19 @@ heading. The updater shows those headings before it installs anything.
 
 ---
 
+## 5.7.4 - 14 November 2026
+
+**A dead wrapper in Steam is now visible - and removed with one key.** If a
+game's launch options still hold a wrapper from a deleted pack folder, the game
+does not start and Windows says "cannot find ...game.cmd". Before, the pack did
+not see such a wrapper at all: it misread the path in quotes. The wizard now
+shows it at launch and offers to remove it - Enter means no. Only wrappers from
+deleted folders are removed, in all Steam profiles; your own launch options
+stay, and a copy of the profile file is kept. Steam has to be closed first; the
+wizard says so itself.
+
+---
+
 ## 5.7.3 - 14 November 2026
 
 **The hint for a dead wrapper in Steam now works.** If a game's launch options
