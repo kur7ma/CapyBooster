@@ -8,6 +8,68 @@ heading. The updater shows those headings before it installs anything.
 
 ---
 
+## 5.7.7 - 15 November 2026
+
+**The game session now works without core isolation too.** The session
+(pausing search and services, game priorities) only turns on for a game started
+through the pack's wrapper. On processors where core isolation is not needed
+the pack used to not add the wrapper to Steam games, so the chosen session never
+turned on. Now right after the game session step the pack offers to add the
+wrapper to your Steam games, and the "Steam games" card shows up without
+isolation as well. In that case the wrapper leaves the game's cores alone - all
+cores and threads, as with a normal start. The system check warns when the
+session is chosen but no game has the wrapper.
+
+**Game session questions in the window are Yes and No buttons.** This step
+used to show an empty field with an OK button, and it was not clear what to
+type there. Now each question has two buttons; "No" is the default answer, as
+in the console.
+
+**A clear reboot question in the window.** In the middle of the run the pack
+asks for a reboot, and the window used to highlight the "No" button - it read
+like advice not to reboot. Now the buttons say "Yes, reboot now" and "No,
+later", the first one is highlighted, and a line under the question says what
+each answer does: yes - a reboot in 10 seconds and the run continues by itself;
+no - the run stops until you reboot. In the console the same line is printed
+before the question, and Enter still means "no".
+
+**BETA: a graphics card core on AMD processors.** On AMD the pack does not
+pin the graphics card to a core of its own by default: our measurement on
+Ryzen saw no difference. Now you can turn it on for your machine by hand - the
+step "Graphics card core on AMD", in the window a card marked BETA. You choose
+the core (the first game core by default), the pack moves the mouse and
+network to other cores, and after a graphics driver update the pinning comes
+back by itself. The automatic pass and the Optimize button do not run this
+step. It is an experiment: compare with a measurement before and after; revert
+is one button and a reboot. There is no such step on Intel or on laptops.
+
+**The pack adds the wrapper to your Steam games itself again.** Right after
+core isolation there is a new step, "Steam games: start on the game cores" -
+in the window it is a card of its own with Apply and Revert buttons. It adds the
+wrapper to the games' launch options, so a game started from Steam the usual
+way lands on the game cores by itself. You can pick all games or only some by
+number; your own launch options stay in place; a wrapper from an old pack folder
+is replaced by the new one instead of a second one being added. Library
+programs such as live wallpapers are not part of "all games". Before writing,
+the pack asks to close Steam and takes a copy of its settings. Without core
+isolation the step changes nothing: the wrapper is not needed then.
+
+**Core isolation no longer moves games to the slow cores silently.** Isolation
+only helps games that start through the pack's wrapper; without it a game moves
+to the slow cores together with the background and loses frames. The pack used
+not to check this: someone had dead wrappers removed from 33 games, turned
+isolation on right after, and FPS dropped hard. The pack now reads the games'
+Steam launch options itself: the isolation step says before asking that no game
+goes through the wrapper and shows the line to add; removing dead wrappers with
+isolation on offers to add the wrapper or revert isolation; the system check
+shows it as a separate line.
+
+**The lsass priority no longer shows as an empty line.** On new Windows 11 builds
+the check printed "lsass" with no value and the verdict "not Idle", although the
+priority simply could not be read directly. It is now read another way.
+
+---
+
 ## 5.7.6 - 14 November 2026
 
 **The dead Steam wrapper question now reaches those who pick the GUI.** It sat
