@@ -8,6 +8,18 @@ heading. The updater shows those headings before it installs anything.
 
 ---
 
+## 5.7.8 - 15 November 2026
+
+**A new version is offered to those who choose the window too.** The pack
+checked for updates only after the "window or console" question, and when you
+chose the window the check never happened: the window kept running the old
+version without a word. Now the check runs right after start, before that
+question, so a new version is offered whatever you choose. The "Up to date"
+line at the bottom of the window was misleading as well: it meant the window
+had refreshed the computer info, not that the pack was current. It now says so.
+
+---
+
 ## 5.7.7 - 15 November 2026
 
 **The game session now works without core isolation too.** The session
