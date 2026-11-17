@@ -8,6 +8,67 @@ heading. The updater shows those headings before it installs anything.
 
 ---
 
+## 5.7.9 - 17 November 2026
+
+**The Steam wrapper window no longer sits on the taskbar.** On Windows 11 the
+console window that opens when a game starts through the pack's wrapper stayed
+on the taskbar for the whole game. Now it closes a fraction of a second after
+the launch, and the wrapper keeps working without a window.
+
+**Games with launch options like "-w 1920 -h 1080" start through the
+wrapper.** The wrapper took such game options for its own, and the game did not
+start at all, with not a single line in the log. Game options now reach the
+game as they are.
+
+**Faster start.** The update check and the search for traces of old pack
+versions in Steam ran one after another and took up to 10-20 seconds between
+the language choice and the "window or console" question. Now they run at the
+same time, right after the language choice, and the question shows up within a
+couple of seconds.
+
+**A clear question for opt-in steps.** Instead of "This step is OFF by
+default. Turn it on anyway?" the pack asks "Apply this step?". For a step that
+itself turns something off (virtualization-based security, for example) "turn
+on" read the wrong way round. If the step is already applied, the pack says so
+and keeps things as they are by default. The card label now reads "opt-in
+only".
+
+**The window during measurements.** Before a measurement the window says what
+is being measured and roughly how long it takes, then minimises to the taskbar
+so it does not disturb the measurement. Run progress shows on its taskbar icon,
+the measurement time left in its title. The window no longer pops back and
+forth on every measurement: it comes back by itself for a question and at the
+end of the run.
+
+**Run progress bar and a restart button.** The run tab shows a progress bar,
+"step N of M" and the elapsed time. If the applied steps need a restart, a
+"Restart now" button appears; before, there was only a line in the log. The
+home tab has the same button when Windows is waiting for a restart.
+
+**Accepting disabled maintenance is no longer undone.** If you chose
+"accept and hide" for disabled automatic maintenance in the old-tweaks step,
+the disks step still turned it back on without asking. Now it leaves it as is
+and says how to withdraw the decision, and the system check shows it as your
+choice rather than an error.
+
+**The VBS step asks for a restart even when it only changes how the hypervisor
+starts.** If the registry was already in place, the pack decided the step had
+changed nothing: the card said "not applied", and the wizard did not remind you
+of the restart the change needs.
+
+**The real reason when a restore point cannot be created.** With system
+protection on but the shadow copy service disabled, the pack used to promise a
+restore point and, after the failure, advised turning protection on, which it
+already was. Now it names the disabled service right away, with the command
+that turns it back on.
+
+**One look for the whole window.** Card checkboxes are large, the step name is
+clickable too, and a selected card is highlighted. Scrollbars and "Details"
+use the window's colours instead of the standard grey ones, and the log wraps
+long lines.
+
+---
+
 ## 5.7.8 - 15 November 2026
 
 **A new version is offered to those who choose the window too.** The pack
